@@ -4,10 +4,11 @@ import OAuth from "../../components/OAuth"
 import FormButton from "../../components/form-button"
 import AuthSwitcher from '../../components/auth-switcher';
 
-const SignUp = () => {
+const LogIn = () => {
   return (
     <main>
-      <AuthSwitcher initialAuthType="signup" />
+
+      <AuthSwitcher initialAuthType="login" />
 
       <OAuth></OAuth>
 
@@ -19,19 +20,16 @@ const SignUp = () => {
           </div>
         </div>
         <form className="w-[30%] flex flex-col justify-center items-center gap-6 mt-6">
-          <Input title="Username" id="name" name="name" type="text" placeholder="Choose a username" src="/user-icon.svg" />
-
           <Input title="Email Address" id="email" name="email" type="text" placeholder="Enter your email" src="/email-icon.svg" />
 
           <Input title="Password" id="password" name="password" type="password" placeholder="Create a password" src="/lock-icon.svg" />
 
-          <Input title="Confirm Password" id="confirm-password" name="confirm-password" type="password" placeholder="Confirm your password" src="/lock-icon.svg" />
-
-          <FormButton title={"Create Account"}></FormButton>
+          <FormButton title={"Log In"}></FormButton>
         </form>
       </section>
+
     </main>
   );
 };
 
-export default SignUp;
+export default LogIn;
