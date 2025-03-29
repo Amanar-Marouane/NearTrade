@@ -1,16 +1,24 @@
 import React from "react";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
-const SearchInput = ({ id, name }) => {
+const LocationSelect = ({ name, id }) => {
     return (
-        <div className="flex justify-center items-center border-1 border-gray-400 p-1 rounded-lg h-10 min-w-[20%] max-w-fit">
-            <select name={name} id={id}
-                className="focus:ring-0 focus:outline-none focus:border-transparent">
+        <div className="relative">
+            <select
+                name={name}
+                id={id}
+                className="w-full px-4 py-2 pl-10 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-600 bg-white text-gray-800 appearance-none cursor-pointer"
+            >
+                <option value="">Select Location</option>
                 <option value="agadir">Agadir</option>
-                <option value="marrackech">Marrackech</option>
+                <option value="casablanca">Casablanca</option>
+                <option value="rabat">Rabat</option>
+                <option value="marrakech">Marrakech</option>
             </select>
+            <FaMapMarkerAlt className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
         </div>
     );
 };
 
-export default SearchInput;
+export default LocationSelect;
 
