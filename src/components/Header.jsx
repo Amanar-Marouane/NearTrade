@@ -1,15 +1,10 @@
 import React from "react";
-import SearchInput from "./../components/SearchInput";
-import LocationSelect from "./../components/LocationSelect";
 
-const Header = ({ hidden }) => {
+const Header = () => {
     return (
         <header className="w-full p-2">
-            <nav className={`flex items-center ${hidden ? 'justify-end' : 'justify-between'}`}>
-                <div className={`w-[40%] flex ${hidden ? 'hidden' : ''}`}>
-                    <SearchInput type="text" id="search" name="search" placeholder="Search items nearby..." />
-                    <LocationSelect name="location" id="location" />
-                </div>
+            <nav className="flex items-center justify-between px-8">
+                <h1 className="font-bold text-3xl">NearTrade</h1>
                 <ul className="flex justify-between items-center gap-4">
                     <div className="flex gap-2">
                         <a href="">
@@ -21,12 +16,16 @@ const Header = ({ hidden }) => {
                     </div>
                     <li>
                         <a href="/">
-                            <button className="px-5 py-3 border-1 text-black rounded-lg cursor-pointer">Sign In</button>
+                            <button className="px-5 py-3 border-1 text-black rounded-lg cursor-pointer">
+                                Sign In
+                            </button>
                         </a>
                     </li>
                     <li>
                         <a href="/">
-                            <button className="px-5 py-3 bg-black text-white rounded-lg cursor-pointer">Post an item</button>
+                            <button className="px-5 py-3 bg-black text-white rounded-lg cursor-pointer">
+                                Post an item
+                            </button>
                         </a>
                     </li>
                 </ul>

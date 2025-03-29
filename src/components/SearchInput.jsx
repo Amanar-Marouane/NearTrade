@@ -1,18 +1,17 @@
 import React from "react";
+import { FaSearch } from "react-icons/fa";
 
-const SearchInput = ({ type, id, placeholder, name }) => {
+const SearchInput = ({ type, id, name, placeholder }) => {
     return (
-        <div className="w-full px-6 flex flex-col gap-1">
-            <div className="flex justify-center items-center border-1 border-gray-400 p-1 rounded-lg h-10 w-full">
-                <img src="./search-icon.svg" alt="Input Icon" className="w-8 h-8" />
-                <input
-                    className="w-full h-4 p-2 placeholder:text-lg focus:ring-0 focus:outline-none focus:border-transparent"
-                    type={type}
-                    name={name}
-                    id={id}
-                    placeholder={placeholder}
-                />
-            </div>
+        <div className="relative">
+            <input
+                type={type}
+                id={id}
+                name={name}
+                placeholder={placeholder}
+                className="w-full px-4 py-2 pl-10 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-600 bg-white text-gray-800 placeholder-gray-400"
+            />
+            <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
         </div>
     );
 };
