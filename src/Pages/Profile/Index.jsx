@@ -1,6 +1,6 @@
-import React from "react";
 import { FaMapMarkerAlt, FaStar, FaRegHeart, FaEdit, FaUserFriends, FaShoppingBag, FaExclamationTriangle } from "react-icons/fa";
 import { BiMessageDetail } from "react-icons/bi";
+import Item from './../../components/ItemCard';
 
 const App = () => {
     const featuredProducts = [
@@ -128,33 +128,8 @@ const App = () => {
             <section className="px-8 mb-5 flex flex-col gap-4">
                 <h1 className="text-2xl font-bold text-gray-900">Active Listings</h1>
                 <div className="cards-container gap-8 grid grid-cols-6">
-                    {featuredProducts.map((product, index) => (
-                        <div key={index} className="card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-                            <div className="relative">
-                                <img
-                                    src={product.image}
-                                    alt={product.name}
-                                    className="w-full h-48 object-contain"
-                                />
-                                <button className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white transition-colors">
-                                    <FaRegHeart className="text-gray-600 hover:text-red-500 transition-colors" size={20} />
-                                </button>
-                            </div>
-                            <div className="p-4 space-y-3">
-                                <h3 className="font-bold text-lg text-gray-900">{product.name}</h3>
-                                <p className="font-semibold text-lg text-gray-900">{product.price} DH</p>
-                                <div className="flex items-center text-gray-600 space-x-2">
-                                    <FaMapMarkerAlt size={16} />
-                                    <span className="text-sm">{product.location}</span>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                    <FaStar size={16} className="text-yellow-400" />
-                                    <span className="text-sm text-gray-600">
-                                        {product.rating} • {product.reviews} reviews
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                    {featuredProducts.map((product) => (
+                        <Item img={product.image} name={product.name} price={product.price} location={product.location} rating={product.rating} reviewsCount={product.reviewsCount} />
                     ))}
                 </div>
                 {productsSectionCount >= 6 && (

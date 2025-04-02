@@ -1,5 +1,3 @@
-import React from "react";
-
 const OAuth = () => {
     return (
         <section className="w-full flex flex-col justify-center items-center p-12 gap-2 pb-0">

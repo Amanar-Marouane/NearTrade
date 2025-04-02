@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SearchInput from "./../../components/SearchInput";
 import LocationSelect from "./../../components/LocationSelect";
-import { FaMapMarkerAlt, FaStar, FaRegHeart } from "react-icons/fa";
+import Item from './../../components/ItemCard';
 
 const Index = () => {
     const [priceRange, setPriceRange] = useState(5000);
@@ -11,7 +11,7 @@ const Index = () => {
             price: 899,
             location: "Agadir-Dcheira",
             rating: 4.8,
-            reviews: 15,
+            reviewsCount: 15,
             image: "./iphone.png"
         },
         {
@@ -19,7 +19,7 @@ const Index = () => {
             price: 599,
             location: "Agadir-Dcheira",
             rating: 4.9,
-            reviews: 23,
+            reviewsCount: 23,
             image: "./iphone.png"
         },
         {
@@ -27,7 +27,7 @@ const Index = () => {
             price: 450,
             location: "Agadir-Dcheira",
             rating: 4.7,
-            reviews: 8,
+            reviewsCount: 8,
             image: "./iphone.png"
         },
         {
@@ -35,7 +35,7 @@ const Index = () => {
             price: 299,
             location: "Agadir-Dcheira",
             rating: 4.6,
-            reviews: 12,
+            reviewsCount: 12,
             image: "./iphone.png"
         },
         {
@@ -43,7 +43,7 @@ const Index = () => {
             price: 299,
             location: "Agadir-Dcheira",
             rating: 4.6,
-            reviews: 12,
+            reviewsCount: 12,
             image: "./iphone.png"
         },
         {
@@ -51,7 +51,7 @@ const Index = () => {
             price: 299,
             location: "Agadir-Dcheira",
             rating: 4.6,
-            reviews: 12,
+            reviewsCount: 12,
             image: "./iphone.png"
         },
         {
@@ -59,7 +59,7 @@ const Index = () => {
             price: 299,
             location: "Agadir-Dcheira",
             rating: 4.6,
-            reviews: 12,
+            reviewsCount: 12,
             image: "./iphone.png"
         },
         {
@@ -67,7 +67,7 @@ const Index = () => {
             price: 299,
             location: "Agadir-Dcheira",
             rating: 4.6,
-            reviews: 12,
+            reviewsCount: 12,
             image: "./iphone.png"
         }
     ];
@@ -150,33 +150,8 @@ const Index = () => {
 
                 <div className="flex-1 overflow-y-auto p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {featuredProducts.map((product, index) => (
-                            <div key={index} className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-                                <div className="relative">
-                                    <img
-                                        src={product.image}
-                                        alt={product.name}
-                                        className="w-full h-48 object-contain"
-                                    />
-                                    <button className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white transition-colors">
-                                        <FaRegHeart className="text-gray-600 hover:text-blue-600 transition-colors" size={20} />
-                                    </button>
-                                </div>
-                                <div className="p-4 space-y-3">
-                                    <h3 className="font-bold text-lg text-gray-800">{product.name}</h3>
-                                    <p className="font-semibold text-lg text-blue-600">{product.price} DH</p>
-                                    <div className="flex items-center text-gray-600 space-x-2">
-                                        <FaMapMarkerAlt size={16} />
-                                        <span className="text-sm">{product.location}</span>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <FaStar size={16} className="text-blue-600" />
-                                        <span className="text-sm text-gray-600">
-                                            {product.rating} • {product.reviews} reviews
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+                        {featuredProducts.map((product) => (
+                            <Item img={product.image} name={product.name} price={product.price} location={product.location} rating={product.rating} reviewsCount={product.reviewsCount} />
                         ))}
                     </div>
                 </div>

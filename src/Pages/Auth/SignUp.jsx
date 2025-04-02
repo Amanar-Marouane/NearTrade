@@ -1,4 +1,3 @@
-import React from "react";
 import Input from "../../components/Input"
 import OAuth from "../../components/OAuth"
 import FormButton from "../../components/form-button"
