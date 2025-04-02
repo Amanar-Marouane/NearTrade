@@ -8,10 +8,10 @@ const Header = () => {
                 <ul className="flex justify-between items-center gap-4">
                     <div className="flex gap-2">
                         <a href="">
-                            <img src="./notification-icon.svg" className="w-8 h-8" alt="Notifications" />
+                            <img src="/notification-icon.svg" className="w-8 h-8" alt="Notifications" />
                         </a>
                         <a href="">
-                            <img src="./favorite-icon.svg" className="w-8 h-8" alt="Favorites" />
+                            <img src="/favorite-icon.svg" className="w-8 h-8" alt="Favorites" />
                         </a>
                     </div>
                     <li>
