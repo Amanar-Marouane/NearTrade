@@ -53,7 +53,7 @@ const SignUp = () => {
 
   const IsLogged = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/islooged", {
+      const response = await fetch("http://127.0.0.1:8000/api/islogged", {
         method: "POST",
         headers: {
           "Accept": "application/json",
@@ -86,7 +86,7 @@ const SignUp = () => {
             <h2>Or Continue With</h2>
           </div>
         </div>
-        <form className="w-[30%] flex flex-col justify-center items-center gap-6 mt-6" id="signupForm" onSubmit={handleSubmit}>
+        <form className="w-[30%] flex flex-col justify-center items-center gap-6 mt-6" onSubmit={handleSubmit}>
           <Input title="Username" id="name" name="name" type="text" placeholder="Choose a username" src="/user-icon.svg" />
 
           <Input title="Email Address" id="email" name="email" type="text" placeholder="Enter your email" src="/email-icon.svg" />
