@@ -12,7 +12,7 @@ const Input = ({ type, id, title, src, placeholder, name }) => {
             <label htmlFor={id} className="text-[#374151] text-lg font-semibold p-1">
                 {title}
             </label>
-            <div className="flex justify-center items-center border border-gray-400 p-1">
+            <div className={`flex justify-center items-center border p-1`}>
                 <label htmlFor={id}>
                     <img src={src} alt="Input Icon" className="w-8 h-8" />
                 </label>
@@ -33,6 +33,7 @@ const Input = ({ type, id, title, src, placeholder, name }) => {
                     </button>
                 )}
             </div>
+            <span className={`${id}-error error text-red-500 text-sm mt-1`}></span>
         </div>
     );
 };
