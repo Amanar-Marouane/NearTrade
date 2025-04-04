@@ -1,8 +1,57 @@
-import { FaMapMarkerAlt, FaStar, FaRegHeart, FaEdit, FaUserFriends, FaShoppingBag, FaExclamationTriangle } from "react-icons/fa";
+import { FaStar, FaExclamationTriangle } from "react-icons/fa";
 import { BiMessageDetail } from "react-icons/bi";
 import Item from './../../components/ItemCard';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
 
 const App = () => {
+    const navigate = useNavigate();
+    const [profile, setProfile] = useState(null);
+
+    const Index = async () => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/profile", {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                credentials: 'include',
+            });
+
+            const result = await response.json();
+            if (response.status === 403) navigate('/login');
+            setProfile(result.data);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    const IsLogged = async () => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/islogged", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                credentials: 'include',
+            });
+
+            const result = await response.json();
+            if (!result.data) navigate('/login');
+            return !result.data;
+        } catch (error) {
+            console.error("Error:", error);
+            return false;
+        }
+    };
+
+    useEffect(() => {
+        IsLogged()
+        Index()
+    }, []);
+
     const featuredProducts = [
         {
             name: "iPhone 13 Pro",
@@ -37,7 +86,7 @@ const App = () => {
                 <div className="absolute left-12 -bottom-16">
                     <div className="relative">
                         <img
-                            src="/profile image.jpg"
+                            src={profile ? profile.profile : "/profile image.jpg"}
                             alt="User Profile Image"
                             className="w-32 h-32 rounded-full border-4 border-white object-cover shadow-lg"
                         />
@@ -49,8 +98,8 @@ const App = () => {
                 <div className="bg-white rounded-xl p-6 shadow-sm">
                     <div className="flex justify-between items-start">
                         <div className="space-y-3">
-                            <h1 className="text-2xl font-bold text-gray-900">Marouane L3alawi</h1>
-                            <p className="text-gray-600 text-sm">Member since January 2023</p>
+                            <h1 className="text-2xl font-bold text-gray-900">{profile ? profile.name : "Loading..."}</h1>
+                            <p className="text-gray-600 text-sm">Member since January {profile ? profile.member_since : "Loading..."}</p>
 
                             <div className="flex items-center gap-6 text-sm">
                                 <div className="flex items-center gap-1">
@@ -128,8 +177,8 @@ const App = () => {
             <section className="px-8 mb-5 flex flex-col gap-4">
                 <h1 className="text-2xl font-bold text-gray-900">Active Listings</h1>
                 <div className="cards-container gap-8 grid grid-cols-6">
-                    {featuredProducts.map((product) => (
-                        <Item img={product.image} name={product.name} price={product.price} location={product.location} rating={product.rating} reviewsCount={product.reviewsCount} />
+                    {featuredProducts.map((product, index) => (
+                        <Item key={index} img={product.image} name={product.name} price={product.price} location={product.location} rating={product.rating} reviewsCount={product.reviewsCount} />
                     ))}
                 </div>
                 {productsSectionCount >= 6 && (
