@@ -18,7 +18,7 @@ const LogIn = () => {
       document.querySelectorAll('.error').forEach(element => {
         element.innerHTML = '';
       });
-      
+
       const response = await fetch('http://127.0.0.1:8000/api/login', {
         method: 'POST',
         headers: {
@@ -73,9 +73,9 @@ const LogIn = () => {
     }
   };
 
-  // useEffect(() => {
-  //   IsLogged()
-  // }, []);
+  useEffect(() => {
+    IsLogged()
+  }, []);
 
   return (
     <main>
