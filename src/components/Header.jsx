@@ -1,6 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import LogoutBtn from './LogoutButton';
+import RedirectButton from './RedirectButton';
 
 const Header = () => {
+    const [isIn, setIsIn] = useState(false);
+
+    const IsLogged = async () => {
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/islogged", {
+                method: "POST",
+                credentials: 'include',
+            });
+
+            const result = await response.json();
+            setIsIn(result.data);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    useEffect(() => {
+        IsLogged()
+    }, []);
+
     return (
         <header className="w-full p-2">
             <nav className="flex items-center justify-between px-8">
@@ -15,18 +37,10 @@ const Header = () => {
                         </a>
                     </div>
                     <li>
-                        <a href="/">
-                            <button className="px-5 py-3 border-1 text-black rounded-lg cursor-pointer">
-                                Sign In
-                            </button>
-                        </a>
+                        {isIn ? <LogoutBtn /> : <RedirectButton href={'/login'} label={'Sign In'} />}
                     </li>
                     <li>
-                        <a href="/">
-                            <button className="px-5 py-3 bg-black text-white rounded-lg cursor-pointer">
-                                Post an item
-                            </button>
-                        </a>
+                        <RedirectButton href={'/login'} label={'Post an item'} />
                     </li>
                 </ul>
             </nav>

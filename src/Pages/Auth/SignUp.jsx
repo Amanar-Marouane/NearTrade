@@ -8,21 +8,21 @@ import { useEffect } from 'react';
 const SignUp = () => {
   const navigate = useNavigate();
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    const jsonObject = Object.fromEntries(formData.entries());
 
     try {
       const response = await fetch("http://127.0.0.1:8000/api/signup", {
         method: "POST",
         headers: {
           "Accept": "application/json",
-          "Content-Type": "application/json",
+          // "Content-Type": "application/json",
         },
         credentials: 'include',
-        body: JSON.stringify(jsonObject),
+        body: formData,
       });
 
       if (response.status === 201 || response.status === 403) navigate('/profile');
@@ -86,10 +86,14 @@ const SignUp = () => {
             <h2>Or Continue With</h2>
           </div>
         </div>
-        <form className="w-[30%] flex flex-col justify-center items-center gap-6 mt-6" onSubmit={handleSubmit}>
+        <form className="w-[30%] flex flex-col justify-center items-center gap-6 mt-6" onSubmit={handleSubmit} encType="multipart/form-data">
           <Input title="Username" id="name" name="name" type="text" placeholder="Choose a username" src="/user-icon.svg" />
 
           <Input title="Email Address" id="email" name="email" type="text" placeholder="Enter your email" src="/email-icon.svg" />
+
+          <Input title="Description" id="description" name="description" type="text" placeholder="Enter your description" src="/description-icon.svg" />
+
+          <Input title="Profile" id="profile" name="profile" type="file" placeholder="Insert your profile image" src="/profile-icon.svg" />
 
           <Input title="Password" id="password" name="password" type="password" placeholder="Create a password" src="/lock-icon.svg" />
 
