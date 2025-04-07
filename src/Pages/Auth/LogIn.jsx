@@ -73,7 +73,7 @@ const LogIn = () => {
   }, []);
 
   return (
-    <main>
+    <main className="min-h-[95vh] flex justify-center flex-col items-center">
 
       <AuthSwitcher initialAuthType="login" />
 

@@ -73,7 +73,7 @@ const App = () => {
     const productsSectionCount = document.querySelectorAll('.card').length;
 
     return (
-        <body>
+        <>
             <Header />
             <main className="bg-gray-50 min-h-screen">
                 <section className="px-8 py-2 relative">
@@ -87,7 +87,7 @@ const App = () => {
                     <div className="absolute left-12 -bottom-16">
                         <div className="relative">
                             <img
-                                src={profile ? profile.profile : "/profile image.jpg"}
+                                src={profile ? profile.profile : ""}
                                 alt="User Profile Image"
                                 className="w-32 h-32 rounded-full border-4 border-white object-cover shadow-lg"
                             />
@@ -186,7 +186,7 @@ const App = () => {
                     )}
                 </section>
             </main>
-        </body>
+        </>
     );
 };
 

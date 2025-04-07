@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import LogoutBtn from './LogoutButton';
 import RedirectButton from './RedirectButton';
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
     const [isIn, setIsIn] = useState(false);
+
+    const navigate = useNavigate();
 
     const IsLogged = async () => {
         try {
@@ -15,6 +18,7 @@ const Header = () => {
             const result = await response.json();
             setIsIn(result.data);
         } catch (error) {
+            navigate('/login');
             console.error("Error:", error);
         }
     };
