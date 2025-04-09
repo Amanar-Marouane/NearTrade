@@ -1,6 +1,6 @@
 import { FaMapMarkerAlt, FaStar, FaRegHeart } from "react-icons/fa";
 
-const App = ({ img, name, price, location, rating, reviewsCount }) => {
+const ItemCard = ({ img, name, price, location, rating, reviewsCount }) => {
     return (
         <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
             <div className="relative">
@@ -31,4 +31,4 @@ const App = ({ img, name, price, location, rating, reviewsCount }) => {
     );
 };
 
-export default App;
+export default ItemCard;

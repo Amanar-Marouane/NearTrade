@@ -1,6 +1,6 @@
 import { FaStar } from "react-icons/fa";
 
-const App = ({ img, name, rating, comment }) => {
+const Comment = ({ img, name, rating, comment }) => {
     return (
         <div className="flex items-start gap-2">
             <img src={img} alt={name} className="w-8 h-8 rounded-[50%]" />
@@ -16,4 +16,4 @@ const App = ({ img, name, rating, comment }) => {
     )
 }
 
-export default App;
+export default Comment;

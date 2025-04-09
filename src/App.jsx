@@ -5,7 +5,6 @@ import Signup from './Pages/Auth/SignUp';
 import Login from './Pages/Auth/LogIn';
 import Home from './Pages/Products/Index';
 import Profile from './Pages/Profile/Index';
-import Footer from './components/Footer';
 import ProductShow from './Pages/Products/Show';
 
 const App = () => {
@@ -18,7 +17,6 @@ const App = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/product/:id" element={<ProductShow />} />
       </Routes>
-      <Footer />
     </Router>
   );
 };

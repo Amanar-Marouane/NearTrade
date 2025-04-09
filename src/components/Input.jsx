@@ -17,6 +17,7 @@ const Input = ({ type, id, title, src, placeholder, name }) => {
                     <img src={src} alt="Input Icon" className="w-8 h-8" />
                 </label>
                 <input
+                    autoComplete="on"
                     className="w-full p-2 placeholder:text-lg focus:ring-0 focus:outline-none focus:border-transparent"
                     type={type === "password" && isPasswordVisible ? "text" : type}
                     name={name}

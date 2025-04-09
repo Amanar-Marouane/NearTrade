@@ -4,8 +4,9 @@ import Item from './../../components/ItemCard';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import Header from './../../components/Header';
+import AppLayout from "../../layouts/AppLayout";
 
-const App = () => {
+const Index = () => {
     const navigate = useNavigate();
     const [profile, setProfile] = useState(null);
 
@@ -73,8 +74,7 @@ const App = () => {
     const productsSectionCount = document.querySelectorAll('.card').length;
 
     return (
-        <>
-            <Header />
+        <AppLayout>
             <main className="bg-gray-50 min-h-screen">
                 <section className="px-8 py-2 relative">
                     <div className="h-[25vh] rounded-xl overflow-hidden">
@@ -87,7 +87,7 @@ const App = () => {
                     <div className="absolute left-12 -bottom-16">
                         <div className="relative">
                             <img
-                                src={profile ? profile.profile : ""}
+                                src={profile ? profile.profile : null}
                                 alt="User Profile Image"
                                 className="w-32 h-32 rounded-full border-4 border-white object-cover shadow-lg"
                             />
@@ -186,8 +186,8 @@ const App = () => {
                     )}
                 </section>
             </main>
-        </>
+        </AppLayout>
     );
 };
 
-export default App;
+export default Index;

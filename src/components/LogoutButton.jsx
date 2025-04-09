@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const Button = () => {
+const LogoutButton = () => {
     const navigate = useNavigate();
     const Logout = async (e) => {
         e.preventDefault();
@@ -29,4 +29,4 @@ const Button = () => {
     );
 };
 
-export default Button;
+export default LogoutButton;
