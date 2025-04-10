@@ -1,18 +1,19 @@
-import { FaStar, FaExclamationTriangle } from "react-icons/fa";
-import { BiMessageDetail } from "react-icons/bi";
+import { FaStar, } from "react-icons/fa";
 import Item from './../../components/ItemCard';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from "react";
-import Header from './../../components/Header';
+import { useState, useEffect, useContext } from "react";
 import AppLayout from "../../layouts/AppLayout";
+import RedirectButton from "../../components/RedirectButton";
+import { Context } from '../../context/UserContext';
 
 const Index = () => {
     const navigate = useNavigate();
     const [profile, setProfile] = useState(null);
+    const { userId } = useContext(Context);
+    const host = import.meta.env.VITE_HOST;
 
     const Index = async () => {
         try {
-            const host = import.meta.env.VITE_HOST;
             const response = await fetch(`${host}/api/profile`, {
                 method: "GET",
                 headers: {
@@ -52,27 +53,6 @@ const Index = () => {
         IsLogged()
         Index()
     }, []);
-
-    const featuredProducts = [
-        {
-            name: "iPhone 13 Pro",
-            price: 899,
-            location: "Agadir-Dcheira",
-            rating: 4.8,
-            reviews: 15,
-            image: "./iphone.png"
-        },
-        {
-            name: "Modern Leather Sofa",
-            price: 599,
-            location: "Agadir-Dcheira",
-            rating: 4.9,
-            reviews: 23,
-            image: "./iphone.png"
-        },
-    ];
-
-    const productsSectionCount = document.querySelectorAll('.card').length;
 
     return (
         <AppLayout>
@@ -118,76 +98,33 @@ const Index = () => {
                                 </div>
                             </div>
                             <div className="flex gap-2">
-                                <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
-                                    <BiMessageDetail size={20} />
-                                    Message
-                                </button>
-                                <button className="border border-gray-300 hover:bg-gray-50 px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-gray-700">
-                                    <FaExclamationTriangle size={16} />
-                                    Report
-                                </button>
+                                <RedirectButton label={'Message'} href={`/message/${userId}`}></RedirectButton>
+                                <RedirectButton label={'Report'} href={`/report/${userId}`}></RedirectButton>
                             </div>
                         </div>
 
                         <div className="flex">
-                            <div className="mt-8 min-w-[60%]">
+                            <div className="mt-8 w-full">
                                 <h2 className="text-xl font-semibold mb-4">About</h2>
                                 <p className="text-gray-600 w-[98%]">{profile ? profile.description : "Loading..."}</p>
-                            </div>
-
-                            <div className="w-full">
-                                <div className="mb-4">
-                                    <h2 className="text-xl font-semibold">Recent Reviews</h2>
-                                </div>
-                                <div className="space-y-4">
-                                    <div className="border-b pb-4">
-                                        <div className="flex justify-between items-start mb-2">
-                                            <span className="font-medium">Michael R.</span>
-                                            <div className="flex text-yellow-400">
-                                                <FaStar size={16} />
-                                                <FaStar size={16} />
-                                                <FaStar size={16} />
-                                                <FaStar size={16} />
-                                                <FaStar size={16} />
-                                            </div>
-                                        </div>
-                                        <p className="text-gray-600">Great seller! Item was exactly as described and shipping was fast.</p>
-                                    </div>
-
-                                    <div className="border-b pb-4">
-                                        <div className="flex justify-between items-start mb-2">
-                                            <span className="font-medium">Michael R.</span>
-                                            <div className="flex text-yellow-400">
-                                                <FaStar size={16} />
-                                                <FaStar size={16} />
-                                                <FaStar size={16} />
-                                                <FaStar size={16} />
-                                                <FaStar size={16} />
-                                            </div>
-                                        </div>
-                                        <p className="text-gray-600">Great seller! Item was exactly as described and shipping was fast.</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <section className="px-8 mb-5 flex flex-col gap-4">
+                <section className="px-8 mb-5 flex flex-col gap-4 justify-center items-center">
                     <h1 className="text-2xl font-bold text-gray-900">Active Listings</h1>
                     <div className="cards-container gap-8 grid grid-cols-6">
-                        {featuredProducts.map((product, index) => (
-                            <Item key={index} img={product.image} name={product.name} price={product.price} location={product.location} rating={product.rating} reviewsCount={product.reviewsCount} />
-                        ))}
+                        {profile ? profile.lastActiveProducts.map((product) => (
+                            <Item key={product.id} img={`${host}${product.images[0]}`} name={product.name} price={product.price} location={product.location} category={product.category} status={product.status} />
+                        )) : "Loading..."}
                     </div>
-                    {productsSectionCount >= 6 && (
-                        <button type="submit" className="px-6 py-4 bg-black text-white rounded-lg">
-                            See All Listings
-                        </button>
-                    )}
+                    {profile ? profile.lastActiveProducts.length >= 6 && (
+                        <RedirectButton label={'See All Listings'} href='/products/me'></RedirectButton>
+                    ) : ''}
                 </section>
             </main>
-        </AppLayout>
+        </AppLayout >
     );
 };
 

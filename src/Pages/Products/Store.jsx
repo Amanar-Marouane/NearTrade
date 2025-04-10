@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import Select from '../../components/Select';
 import { Context } from '../../context/UserContext';
+import RedirectButton from '../../components/RedirectButton';
 
 const Store = () => {
     const navigate = useNavigate();
@@ -42,8 +43,7 @@ const Store = () => {
 
     useEffect(() => {
         data()
-        console.log(userId);
-    }, [userId]);
+    }, []);
 
     const handleImageChange = (e, index) => {
         const file = e.target.files[0];
@@ -133,12 +133,18 @@ const Store = () => {
         <AppLayout>
             <main className='bg-gray-100 min-h-screen flex items-center justify-center p-4'>
                 <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-2xl">
+                    <a href="/products/me">
+                        <img src="/back-icon.svg" alt="Get Back To The List" className='h-8 w-8' />
+                    </a>
+
                     <h1 className="text-2xl font-bold text-center mb-8 text-black">Create New Product</h1>
 
                     <form action="#" method="POST" className="space-y-6" onSubmit={handleSubmit}>
                         <Input type={'text'} id={'name'} name={'name'} title={'Product Name'} src={'/product-icon.svg'} placeholder={'What you want to sell'} />
 
                         <Input type={'text'} id={'description'} name={'description'} title={'Description'} src={'/description-icon.svg'} placeholder={'Describe your item'} />
+
+                        <Input type={'text'} id={'location'} name={'location'} title={'Location'} src={'/location-icon.svg'} placeholder={'Location your item'} />
 
                         <Select name={'category_id'} label={'Category'} src={'/category-icon.svg'}>
                             <option value="null" selected disabled>Select a category</option>

@@ -1,30 +1,34 @@
-import { FaMapMarkerAlt, FaStar, FaRegHeart } from "react-icons/fa";
+import { FaMapMarkerAlt, FaRegHeart, FaTag, FaTags } from "react-icons/fa";
 
-const ItemCard = ({ img, name, price, location, rating, reviewsCount }) => {
+const ItemCard = ({ img, name, price, location, status, category }) => {
     return (
-        <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+        <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200">
             <div className="relative">
                 <img
                     src={img}
                     alt={name}
-                    className="w-full h-48 object-contain"
+                    className="w-full h-48 object-contain bg-gray-100"
                 />
-                <button className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white transition-colors">
-                    <FaRegHeart className="text-gray-600 hover:text-blue-600 transition-colors" size={20} />
+                <button className="absolute top-3 right-3 p-2 rounded-full bg-white hover:bg-gray-200 transition">
+                    <FaRegHeart className="text-gray-700 hover:text-black transition-colors" size={20} />
                 </button>
             </div>
-            <div className="p-4 space-y-3">
-                <h3 className="font-bold text-lg text-gray-800">{name}</h3>
-                <p className="font-semibold text-lg text-blue-600">{price} DH</p>
-                <div className="flex items-center text-gray-600 space-x-2">
-                    <FaMapMarkerAlt size={16} />
-                    <span className="text-sm">{location}</span>
+            <div className="p-4 space-y-2">
+                <h3 className="font-semibold text-lg text-black truncate">{name}</h3>
+
+                <div className="flex items-center text-md text-black font-bold space-x-2">
+                    <FaTag size={16} className="text-gray-700" />
+                    <span>{price} DH</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                    <FaStar size={16} className="text-blue-600" />
-                    <span className="text-sm text-gray-600">
-                        {rating} • {reviewsCount} reviews
-                    </span>
+
+                <div className="flex items-center text-sm text-gray-600 space-x-2">
+                    <FaMapMarkerAlt size={14} />
+                    <span>{location ?? 'Ghir hna'}</span>
+                </div>
+
+                <div className="flex items-center text-sm text-gray-600 space-x-2">
+                    <FaTags size={14} />
+                    <span>{category} | {status}</span>
                 </div>
             </div>
         </div>
