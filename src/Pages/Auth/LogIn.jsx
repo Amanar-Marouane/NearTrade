@@ -14,12 +14,13 @@ const LogIn = () => {
 
     const formData = new FormData(e.target);
 
+    const host = import.meta.env.VITE_HOST;
     try {
       document.querySelectorAll('.error').forEach(element => {
         element.innerHTML = '';
       });
 
-      const response = await fetch('http://127.0.0.1:8000/api/login', {
+      const response = await fetch(`${host}/api/login`, {
         method: 'POST',
         credentials: 'include',
         body: formData,

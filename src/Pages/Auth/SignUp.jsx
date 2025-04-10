@@ -9,6 +9,7 @@ import GuestLayout from "../../layouts/GuestLayout";
 const SignUp = () => {
   const navigate = useNavigate();
 
+  const host = import.meta.env.VITE_HOST;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +17,7 @@ const SignUp = () => {
     const formData = new FormData(e.target);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/signup", {
+      const response = await fetch(`${host}/api/signup`, {
         method: "POST",
         headers: {
           "Accept": "application/json",
@@ -54,7 +55,7 @@ const SignUp = () => {
 
   const IsLogged = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/islogged", {
+      const response = await fetch(`${host}/api/islogged`, {
         method: "POST",
         headers: {
           "Accept": "application/json",

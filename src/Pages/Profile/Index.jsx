@@ -12,7 +12,8 @@ const Index = () => {
 
     const Index = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/profile", {
+            const host = import.meta.env.VITE_HOST;
+            const response = await fetch(`${host}/api/profile`, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
