@@ -4,16 +4,21 @@ import FormButton from '../../components/FormButton';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import Select from '../../components/Select';
-import { Context } from '../../components/Header';
+import { Context } from '../../context/UserContext';
 
 const Store = () => {
     const navigate = useNavigate();
+    const host = import.meta.env.VITE_HOST;
     const [categories, setCategories] = useState(null);
     const [status, setSatus] = useState(null);
     const [images, setImages] = useState([null, null, null, null]);
     const [imageCount, setImageCount] = useState(0);
-    const host = import.meta.env.VITE_HOST;
-    const [userId, setUserId] = useContext(Context);
+    const { userId } = useContext(Context);
+
+    useEffect(() => {
+        data()
+        console.log(userId);
+    }, [userId]);
 
     const data = async () => {
         try {
@@ -26,19 +31,18 @@ const Store = () => {
             });
 
             const result = await response.json();
-            if (response.status === 403) navigate('/login');
+            if (response.status === 403) {
+                navigate('/login');
+                return;
+            }
 
             setCategories(result.data['categories']);
             setSatus(result.data['status']);
         } catch (error) {
             console.error("Error:", error);
+            navigate('/login');
         }
     }
-
-    useEffect(() => {
-        data()
-        console.log(userId);
-    }, []);
 
     const handleImageChange = (e, index) => {
         const file = e.target.files[0];
@@ -67,27 +71,28 @@ const Store = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(userId);
 
-        // const formData = new FormData(e.target);
-        // try {
-        //     const response = await fetch(`${host}/api/product/store`, {
-        //         method: "POST",
-        //         headers: {
-        //             "Accept": "application/json",
-        //             "Content-Type": "application/json",
-        //         },
-        //         credentials: 'include',
-        //         body: formData,
-        //     });
+        const formData = new FormData(e.target);
+        formData.append('user_id', userId);
+        try {
+            const response = await fetch(`${host}/api/product/store`, {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                credentials: 'include',
+                body: formData,
+            });
+            console.log(formData);
 
-        //     const result = await response.json();
-        //     console.log(result);
+            const result = await response.json();
+            console.log(result);
 
-        // } catch (error) {
-        //     console.log(error);
+        } catch (error) {
+            console.log(error);
 
-        // }
+        }
     }
 
     return (
@@ -97,6 +102,7 @@ const Store = () => {
                     <h1 className="text-2xl font-bold text-center mb-8 text-black">Create New Product</h1>
 
                     <form action="#" method="POST" className="space-y-6" onSubmit={handleSubmit}>
+                        <input type="hidden" name='user_id' value={userId} />
                         <Input type={'text'} id={'name'} name={'name'} title={'Product Name'} src={'/product-icon.svg'} placeholder={'What you want to sell'} />
 
                         <Input type={'text'} id={'description'} name={'description'} title={'Description'} src={'/description-icon.svg'} placeholder={'Describe your item'} />

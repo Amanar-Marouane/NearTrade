@@ -12,16 +12,16 @@ import ProductStore from './Pages/Products/Store';
 const App = () => {
 
   return (
-      <Router>
-        <Routes>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/product/:id" element={<ProductShow />} />
-          <Route path="/new" element={<ProductStore />} />
-        </Routes>
-      </Router>
+    <Router>
+      <Routes>
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/product/:id" element={<ProductShow />} />
+        <Route path="/new" element={<ProductStore />} />
+      </Routes>
+    </Router>
   );
 };
 
