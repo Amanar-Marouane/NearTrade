@@ -1,12 +1,14 @@
 import { createContext, useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 
+
 export const Context = createContext('');
 
 const UserContext = ({ children }) => {
     const navigate = useNavigate();
     const [userId, setUserId] = useState('');
     const [isIn, setIsIn] = useState(false);
+    const values = { userId, isIn };
 
     const IsLogged = async () => {
         try {
@@ -29,10 +31,10 @@ const UserContext = ({ children }) => {
     }, []);
 
     return (
-        <Context.Provider value={{ userId, setUserId, isIn, setIsIn }}>
+        <Context.Provider value={values}>
             {children}
         </Context.Provider>
     )
 }
 
-export default UserContext
+export default UserContext;

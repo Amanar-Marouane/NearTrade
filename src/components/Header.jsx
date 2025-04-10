@@ -4,7 +4,7 @@ import { Context } from '../context/UserContext';
 import { useContext } from 'react';
 
 const Header = () => {
-    const { isIn, setIsIn } = useContext(Context);
+    const { isIn } = useContext(Context);
 
     return (
         <header className="w-full p-2">

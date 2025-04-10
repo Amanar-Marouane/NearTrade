@@ -12,13 +12,9 @@ const Store = () => {
     const [categories, setCategories] = useState(null);
     const [status, setSatus] = useState(null);
     const [images, setImages] = useState([null, null, null, null]);
+    const [imageFiles, setImageFiles] = useState([null, null, null, null]);
     const [imageCount, setImageCount] = useState(0);
     const { userId } = useContext(Context);
-
-    useEffect(() => {
-        data()
-        console.log(userId);
-    }, [userId]);
 
     const data = async () => {
         try {
@@ -44,9 +40,18 @@ const Store = () => {
         }
     }
 
+    useEffect(() => {
+        data()
+        console.log(userId);
+    }, [userId]);
+
     const handleImageChange = (e, index) => {
         const file = e.target.files[0];
         if (!file) return;
+
+        const newImageFiles = [...imageFiles];
+        newImageFiles[index] = file;
+        setImageFiles(newImageFiles);
 
         const reader = new FileReader();
         reader.onload = () => {
@@ -65,6 +70,10 @@ const Store = () => {
         newImages[index] = null;
         setImages(newImages);
 
+        const newImageFiles = [...imageFiles];
+        newImageFiles[index] = null;
+        setImageFiles(newImageFiles);
+
         const actualImages = newImages.filter(img => img !== null);
         setImageCount(actualImages.length);
     };
@@ -74,24 +83,49 @@ const Store = () => {
 
         const formData = new FormData(e.target);
         formData.append('user_id', userId);
+        imageFiles.forEach((file) => {
+            if (file !== null) {
+                formData.append(`images[]`, file);
+            }
+        });
+
+
         try {
+            document.querySelectorAll('.error').forEach(element => {
+                element.innerHTML = '';
+            });
+
             const response = await fetch(`${host}/api/product/store`, {
                 method: "POST",
                 headers: {
                     "Accept": "application/json",
-                    "Content-Type": "application/json",
                 },
                 credentials: 'include',
                 body: formData,
             });
-            console.log(formData);
 
             const result = await response.json();
+
+            if (response.status === 201) {
+                navigate('/profile');
+            }
             console.log(result);
 
+            if (result.errors) {
+                const errors = Object.entries(result.errors).reduce((acc, [key, value]) => {
+                    acc[key] = value[0];
+                    return acc;
+                }, {});
+
+                Object.entries(errors).forEach(([key, message]) => {
+                    const errorSpan = document.querySelector(`.${key}-error`);
+                    if (errorSpan) {
+                        errorSpan.innerHTML = message;
+                    }
+                });
+            }
         } catch (error) {
             console.log(error);
-
         }
     }
 
@@ -102,7 +136,6 @@ const Store = () => {
                     <h1 className="text-2xl font-bold text-center mb-8 text-black">Create New Product</h1>
 
                     <form action="#" method="POST" className="space-y-6" onSubmit={handleSubmit}>
-                        <input type="hidden" name='user_id' value={userId} />
                         <Input type={'text'} id={'name'} name={'name'} title={'Product Name'} src={'/product-icon.svg'} placeholder={'What you want to sell'} />
 
                         <Input type={'text'} id={'description'} name={'description'} title={'Description'} src={'/description-icon.svg'} placeholder={'Describe your item'} />
@@ -163,9 +196,8 @@ const Store = () => {
                                                     <input
                                                         type="file"
                                                         className="hidden"
-                                                        accept="image/*"
                                                         onChange={(e) => handleImageChange(e, index)}
-                                                        name="[images]"
+                                                        name="images" multiple
                                                     />
                                                 </label>
                                             ) : null
