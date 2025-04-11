@@ -98,9 +98,6 @@ const Index = () => {
                                     <div className="flex items-center gap-1 text-gray-700">
                                         <span>243 transactions</span>
                                     </div>
-                                    <div className="flex items-center gap-1 text-gray-700">
-                                        <span>98% response rate</span>
-                                    </div>
                                 </div>
                             </div>
                             <div className="flex gap-2">
