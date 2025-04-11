@@ -9,7 +9,7 @@ const Header = () => {
     return (
         <header className="w-full p-2">
             <nav className="flex items-center justify-between px-8">
-                <h1 className="font-bold text-3xl">NearTrade</h1>
+                <a href="/home"><h1 className="font-bold text-3xl">NearTrade</h1></a>
                 <ul className="flex justify-between items-center gap-4">
                     <div className="flex gap-2">
                         <a href="">
@@ -20,13 +20,19 @@ const Header = () => {
                         </a>
                     </div>
                     <li>
-                        {isIn ? <LogoutBtn /> : <RedirectButton href={'/login'} label={'Sign In'} />}
+                        <RedirectButton href={'/home'} label={'Home'} />
+                    </li>
+                    <li>
+                        <RedirectButton href={'/profile'} label={'Profile'} />
                     </li>
                     <li>
                         <RedirectButton href={'/new'} label={'Post an item'} />
                     </li>
                     <li>
                         <RedirectButton href={'/products'} label={'My items'} />
+                    </li>
+                    <li>
+                        {isIn ? <LogoutBtn /> : <RedirectButton href={'/login'} label={'Sign In'} />}
                     </li>
                 </ul>
             </nav>

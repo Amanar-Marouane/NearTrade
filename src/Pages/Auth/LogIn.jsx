@@ -3,7 +3,6 @@ import OAuth from "../../components/OAuth"
 import FormButton from "../../components/FormButton"
 import AuthSwitcher from '../../components/AuthSwitcher';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import GuestLayout from "../../layouts/GuestLayout";
 
 const LogIn = () => {
@@ -51,28 +50,6 @@ const LogIn = () => {
       console.log(error);
     }
   };
-
-  const IsLogged = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/islogged", {
-        method: "POST",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-        credentials: 'include',
-      });
-
-      const result = await response.json();
-      if (result.data) navigate('/profile');
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  useEffect(() => {
-    IsLogged()
-  }, []);
 
   return (
     <GuestLayout>

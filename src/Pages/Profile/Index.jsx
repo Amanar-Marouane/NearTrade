@@ -5,12 +5,14 @@ import { useState, useEffect, useContext } from "react";
 import AppLayout from "../../layouts/AppLayout";
 import RedirectButton from "../../components/RedirectButton";
 import { Context } from '../../context/UserContext';
+import LoadingContent from "../../services/loadingContent";
 
 const Index = () => {
     const navigate = useNavigate();
     const [profile, setProfile] = useState(null);
     const { userId } = useContext(Context);
     const host = import.meta.env.VITE_HOST;
+    const [status, setStatus] = useState(0);
 
     const Index = async () => {
         try {
@@ -24,7 +26,10 @@ const Index = () => {
             });
 
             const result = await response.json();
+
             if (response.status === 403) navigate('/login');
+            setStatus(response.status);
+
             setProfile(result.data);
         } catch (error) {
             console.error("Error:", error);
@@ -55,8 +60,9 @@ const Index = () => {
     }, []);
 
     return (
-        <AppLayout>
+        < AppLayout >
             <main className="bg-gray-50 min-h-screen">
+                <LoadingContent status={status} />
                 <section className="px-8 py-2 relative">
                     <div className="h-[25vh] rounded-xl overflow-hidden">
                         <img
