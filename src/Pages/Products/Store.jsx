@@ -2,10 +2,8 @@ import AppLayout from '../../layouts/AppLayout';
 import Input from '../../components/Input';
 import FormButton from '../../components/FormButton';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import Select from '../../components/Select';
-import { Context } from '../../context/UserContext';
-import RedirectButton from '../../components/RedirectButton';
 
 const Store = () => {
     const navigate = useNavigate();
@@ -15,7 +13,6 @@ const Store = () => {
     const [images, setImages] = useState([null, null, null, null]);
     const [imageFiles, setImageFiles] = useState([null, null, null, null]);
     const [imageCount, setImageCount] = useState(0);
-    const { userId } = useContext(Context);
 
     const data = async () => {
         try {
@@ -82,7 +79,6 @@ const Store = () => {
         e.preventDefault();
 
         const formData = new FormData(e.target);
-        formData.append('user_id', userId);
         imageFiles.forEach((file) => {
             if (file !== null) {
                 formData.append(`images[]`, file);

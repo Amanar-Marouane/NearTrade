@@ -29,7 +29,7 @@ const Header = () => {
                         <RedirectButton href={'/new'} label={'Post an item'} />
                     </li>
                     <li>
-                        <RedirectButton href={'/products'} label={'My items'} />
+                        <RedirectButton href={'/products/me'} label={'My items'} />
                     </li>
                     <li>
                         {isIn ? <LogoutBtn /> : <RedirectButton href={'/login'} label={'Sign In'} />}

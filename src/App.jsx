@@ -8,6 +8,7 @@ import Profile from './Pages/Profile/Index';
 import ProductShow from './Pages/Products/Show';
 import ProductStore from './Pages/Products/Store';
 import UserContext from './context/UserContext';
+import UserProducts from './Pages/Products/UserProducts';
 
 const App = () => {
 
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/product/:id" element={<ProductShow />} />
           <Route path="/new" element={<ProductStore />} />
+          <Route path="/products/me" element={<UserProducts />} />
         </Routes>
       </UserContext>
     </Router>

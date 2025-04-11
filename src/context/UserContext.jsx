@@ -7,9 +7,8 @@ export const Context = createContext('');
 const UserContext = ({ children }) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-    const [userId, setUserId] = useState('');
     const [isIn, setIsIn] = useState(false);
-    const values = { userId, isIn };
+    const values = { isIn };
 
     const IsLogged = async () => {
         try {
@@ -19,7 +18,6 @@ const UserContext = ({ children }) => {
             });
 
             const result = await response.json();
-            setUserId(result.data['authenticated']);
             setIsIn(result.data['id']);
         } catch (error) {
             navigate('/login');
