@@ -119,7 +119,7 @@ const Index = () => {
                     <h1 className="text-2xl font-bold text-gray-900">Active Listings</h1>
                     <div className="cards-container gap-8 grid grid-cols-6">
                         {profile ? profile.lastActiveProducts.map((product) => (
-                            <Item key={product.id} img={`${host}${product.images[0]}`} name={product.name} price={product.price} location={product.location} category={product.category} status={product.status} />
+                            <Item key={product.id} id={product.id} img={`${host}${product.images[0]}`} name={product.name} price={product.price} location={product.location} category={product.category} status={product.status} />
                         )) : "Loading..."}
                     </div>
                     {profile ? profile.lastActiveProducts.length >= 6 && (
