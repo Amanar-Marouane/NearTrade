@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 const LogoutButton = () => {
     const navigate = useNavigate();
+    const host = import.meta.env.VITE_HOST;
     const Logout = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/logout', {
+            const response = await fetch(`${host}/api/logout`, {
                 method: 'POST',
                 headers: {
                     "Accept": "application/json",

@@ -7,6 +7,7 @@ import AppLayout from "../../layouts/AppLayout";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LoadingContent from "../../services/loadingContent";
+import DeleteButton from "../../components/products/DeleteButton";
 
 const Show = () => {
     const navigate = useNavigate();
@@ -147,9 +148,17 @@ const Show = () => {
                                 <h2 className="text-gray-800">{product ? product.description : ''}</h2>
                             </div>
 
+                            <div className="flex items-center gap-2">
+                                <span className="font-semibold text-gray-700">Category:</span>
+                                <span className="bg-gray-100 text-black-800 px-3 py-1 rounded-full text-sm">
+                                    {product ? product.category : 'Uncategorized'}
+                                </span>
+                            </div>
+
                             <div className="flex gap-6 pt-3">
                                 <RedirectButton label={'Secure Purchase'} />
                                 <RedirectButton label={'Message Seller'} />
+                                {product && product.canDelete ? <DeleteButton id={product ? product.id : ''} /> : ''};
                             </div>
                         </div>
 
