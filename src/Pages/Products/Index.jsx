@@ -1,81 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchInput from "./../../components/SearchInput";
 import LocationSelect from "./../../components/LocationSelect";
 import ItemCard from './../../components/ItemCard';
 import AppLayout from "../../layouts/AppLayout";
+import LoadingContent from "../../services/loadingContent";
+import NoProductsView from "../../components/products/NoProductsView";
 
 const Index = () => {
-    const [priceRange, setPriceRange] = useState(5000);
-    const featuredProducts = [
-        {
-            name: "iPhone 13 Pro",
-            price: 899,
-            location: "Agadir-Dcheira",
-            rating: 4.8,
-            reviewsCount: 15,
-            image: "./iphone.png"
-        },
-        {
-            name: "Modern Leather Sofa",
-            price: 599,
-            location: "Agadir-Dcheira",
-            rating: 4.9,
-            reviewsCount: 23,
-            image: "./iphone.png"
-        },
-        {
-            name: "Mountain Bike",
-            price: 450,
-            location: "Agadir-Dcheira",
-            rating: 4.7,
-            reviewsCount: 8,
-            image: "./iphone.png"
-        },
-        {
-            name: "Gaming Console",
-            price: 299,
-            location: "Agadir-Dcheira",
-            rating: 4.6,
-            reviewsCount: 12,
-            image: "./iphone.png"
-        },
-        {
-            name: "Gaming Console",
-            price: 299,
-            location: "Agadir-Dcheira",
-            rating: 4.6,
-            reviewsCount: 12,
-            image: "./iphone.png"
-        },
-        {
-            name: "Gaming Console",
-            price: 299,
-            location: "Agadir-Dcheira",
-            rating: 4.6,
-            reviewsCount: 12,
-            image: "./iphone.png"
-        },
-        {
-            name: "Gaming Console",
-            price: 299,
-            location: "Agadir-Dcheira",
-            rating: 4.6,
-            reviewsCount: 12,
-            image: "./iphone.png"
-        },
-        {
-            name: "Gaming Console",
-            price: 299,
-            location: "Agadir-Dcheira",
-            rating: 4.6,
-            reviewsCount: 12,
-            image: "./iphone.png"
+    const host = import.meta.env.VITE_HOST;
+    const [priceRange, setPriceRange] = useState(20000);
+    const [products, setProducts] = useState([]);
+    const [status, setStatus] = useState(0);
+
+    const index = async () => {
+        try {
+            const response = await fetch(`${host}/api/products`, {
+                method: 'GET',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                credentials: 'include',
+            });
+            setStatus(response.status);
+            const result = await response.json();
+            setProducts(result.data);
+        } catch (error) {
+            console.log(error);
         }
-    ];
+    };
+
+    useEffect(() => {
+        index();
+    }, []);
 
     return (
         <AppLayout>
-            <main className="h-screen flex overflow-hidden">
+            <main className="h-[85vh] flex overflow-hidden">
+                <LoadingContent status={status} />
                 <div className="w-[25%] border-r border-gray-200 p-6 bg-white">
                     <h2 className="text-xl font-semibold mb-6 text-gray-800">Search & Filter</h2>
                     <div className="space-y-6">
@@ -151,11 +113,18 @@ const Index = () => {
                     </div>
 
                     <div className="flex-1 overflow-y-auto p-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {featuredProducts.map((product) => (
-                                <ItemCard img={product.image} name={product.name} price={product.price} location={product.location} rating={product.rating} reviewsCount={product.reviewsCount} />
-                            ))}
-                        </div>
+                        {products && products.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {products.map((product) => (
+                                        <ItemCard key={product.id} id={product.id} img={`${host}${product.images[0]}`} name={product.name} price={product.price} location={product.location} category={product.category} status={product.status} />
+                                    ))}
+                                </div>
+                            </div>
+                        ) : (
+                            <NoProductsView />
+                        )}
+
                     </div>
                 </div>
             </main>
