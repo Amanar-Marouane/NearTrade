@@ -158,7 +158,12 @@ const Show = () => {
                             <div className="flex gap-6 pt-3">
                                 <RedirectButton label={'Secure Purchase'} />
                                 <RedirectButton label={'Message Seller'} />
-                                {product && product.canDelete ? <DeleteButton id={product ? product.id : ''} /> : ''};
+                                {product && profile.role === 'User' && product.canDelete && (
+                                    <DeleteButton id={product.id} />
+                                )}
+                                {product && profile.role === 'User' && product.canUpdate && (
+                                    <RedirectButton label={'Edit'} href={`/product/update/${product ? product.id : ''}`} />
+                                )}
                             </div>
                         </div>
 
