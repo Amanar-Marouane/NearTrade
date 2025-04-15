@@ -36,7 +36,7 @@ const UserContext = ({ children }) => {
     useEffect(() => {
         const interval = setInterval(() => {
             setDots(prev => prev.length >= 3 ? '' : prev + '.');
-        }, 500);
+        }, 1000);
 
         return () => clearInterval(interval);
     }, []);

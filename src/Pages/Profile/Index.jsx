@@ -117,7 +117,7 @@ const Index = () => {
 
                 <section className="px-8 mb-5 flex flex-col gap-4 justify-center items-center">
                     <h1 className="text-2xl font-bold text-gray-900">Active Listings</h1>
-                    <div className="cards-container gap-8 grid grid-cols-6">
+                    <div className="cards-container gap-8 grid grid-cols-6 w-full">
                         {profile ? profile.lastActiveProducts.map((product) => (
                             <Item key={product.id} id={product.id} img={`${host}${product.images[0]}`} name={product.name} price={product.price} location={product.location} category={product.category} status={product.status} />
                         )) : "Loading..."}
