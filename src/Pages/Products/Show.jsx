@@ -5,9 +5,10 @@ import ItemCard from '../../components/ItemCard';
 import Comment from '../../components/Comment';
 import AppLayout from "../../layouts/AppLayout";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import LoadingContent from "../../services/loadingContent";
 import DeleteButton from "../../components/products/DeleteButton";
+import { Context } from "../../context/UserContext";
 
 const Show = () => {
     const navigate = useNavigate();
@@ -17,6 +18,12 @@ const Show = () => {
     const [profile, setProfile] = useState([]);
     const [status, setStatus] = useState(0);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const { userId } = useContext(Context);
+
+    useEffect(() => {
+        console.log(userId);
+
+    }, [userId])
 
     const Product = async () => {
         try {
@@ -33,8 +40,6 @@ const Show = () => {
             if (response.status === 403) navigate('/home');
             setStatus(response.status);
             setProduct(result.data['product']);
-            console.log(result.data['product']);
-
             setProfile(result.data['user']);
         } catch (error) {
             console.log(error);
@@ -158,13 +163,15 @@ const Show = () => {
                             <div className="flex gap-6 pt-3">
                                 <RedirectButton label={'Secure Purchase'} />
                                 <RedirectButton label={'Message Seller'} />
-                                {product && profile.role === 'User' && product.canDelete && (
-                                    <DeleteButton id={product.id} />
-                                )}
-                                {product && profile.role === 'User' && product.canUpdate && (
-                                    <RedirectButton label={'Edit'} href={`/product/update/${product ? product.id : ''}`} />
-                                )}
+
+                                {product && product.user_id === userId && (() => (
+                                    <>
+                                        <DeleteButton id={product.id} />
+                                        <RedirectButton label="Edit" href={`/product/update/${product.id}`} />
+                                    </>
+                                ))()}
                             </div>
+
                         </div>
 
                         <div className="mt-10 border-t border-gray-200 pt-6">
