@@ -6,25 +6,71 @@ export const Context = createContext('');
 
 const UserContext = ({ children }) => {
     const navigate = useNavigate();
+    const host = import.meta.env.VITE_HOST;
     const [loading, setLoading] = useState(true);
-    const [isIn, setIsIn] = useState(false);
-    const values = { isIn };
+    const [userId, setUserId] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [user, setUser] = useState(null);
 
     const IsLogged = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/islogged", {
+            const response = await fetch(`${host}/api/islogged`, {
                 method: "POST",
                 credentials: 'include',
             });
 
             const result = await response.json();
-            setIsIn(result.data['id']);
+
+            if (result.data.authenticated) {
+                setUser(result.data.user)
+                setUserId(result.data.id);
+                setIsAuthenticated(true);
+                return true;
+            } else {
+                setUser(null);
+                setUserId(null);
+                setIsAuthenticated(false);
+                return false;
+            }
         } catch (error) {
-            navigate('/login');
             console.error("Error:", error);
+            setUserId(null);
+            setIsAuthenticated(false);
+            return false;
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleLogout = async () => {
+        try {
+            const response = await fetch(`${host}/api/logout`, {
+                method: 'POST',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                credentials: 'include',
+            });
+
+            if (response.status === 200) {
+                setUserId(null);
+                setIsAuthenticated(false);
+                navigate('/login');
+            }
+        } catch (error) {
+            console.error("Error during logout:", error);
+        }
+    };
+
+    const values = {
+        user,
+        setUser,
+        userId,
+        setUserId,
+        isAuthenticated,
+        setIsAuthenticated,
+        logout: handleLogout
     };
 
     useEffect(() => {

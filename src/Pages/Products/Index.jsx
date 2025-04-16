@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 const Index = () => {
     const navigate = useNavigate();
     const host = import.meta.env.VITE_HOST;
-    const [priceRange, setPriceRange] = useState(0);
     const [products, setProducts] = useState([]);
     const [status, setStatus] = useState(0);
     const [inFilterMode, setInFilterMode] = useState(false);
@@ -117,28 +116,20 @@ const Index = () => {
                         </div>
 
                         <div className="space-y-4">
-                            <h3 className="text-lg font-semibold text-gray-800">Price Range</h3>
+                            <h3 className="text-lg font-semibold text-gray-800">Price Range </h3>
                             <div className="space-y-4">
-                                <div className="flex justify-between text-sm text-gray-600">
-                                    <span>1 DH</span>
-                                    <span>20000 DH</span>
-                                </div>
                                 <input
-                                    type="range"
+                                    type="number"
                                     name="price"
+                                    placeholder="(1- 20000 DH)"
                                     min="1"
-                                    max="20000"
-                                    value={priceRange}
                                     onChange={(e) => {
-                                        setPriceRange(e.target.value);
                                         setFilterData(prev => ({ ...prev, price: e.target.value }));
-
+                                        if (e.target.value <= 0) e.target.value = 1;
+                                        if (e.target.value > 20000) e.target.value = 20000;
                                     }}
-                                    className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-600 bg-white text-gray-800 placeholder-gray-400"
                                 />
-                                <div className="text-sm text-gray-600">
-                                    Selected: {priceRange} DH
-                                </div>
                             </div>
                         </div>
 

@@ -4,7 +4,7 @@ import { Context } from '../context/UserContext';
 import { useContext } from 'react';
 
 const Header = () => {
-    const { isIn } = useContext(Context);
+    const { isAuthenticated } = useContext(Context);
 
     return (
         <header className="w-full p-2">
@@ -32,7 +32,7 @@ const Header = () => {
                         <RedirectButton href={'/products/me'} label={'My items'} />
                     </li>
                     <li>
-                        {isIn ? <LogoutBtn /> : <RedirectButton href={'/login'} label={'Sign In'} />}
+                        {isAuthenticated ? <LogoutBtn /> : <RedirectButton href={'/login'} label={'Sign In'} />}
                     </li>
                 </ul>
             </nav>

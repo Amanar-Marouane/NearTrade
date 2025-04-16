@@ -2,11 +2,12 @@ import Input from "../../components/Input"
 import OAuth from "../../components/OAuth"
 import FormButton from "../../components/FormButton"
 import AuthSwitcher from '../../components/AuthSwitcher';
-import { useNavigate } from 'react-router-dom';
 import GuestLayout from "../../layouts/GuestLayout";
+import { Context } from "../../context/UserContext";
+import { useContext } from "react";
 
 const LogIn = () => {
-  const navigate = useNavigate();
+  const { setIsAuthenticated, setUser, setUserId } = useContext(Context);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,9 +26,13 @@ const LogIn = () => {
         body: formData,
       });
 
-      if (response.status === 200 || response.status === 403) navigate('/profile');
-
       const result = await response.json();
+
+      if (response.status === 200 || response.status === 403) {
+        setIsAuthenticated(true);
+        setUser(result.data);
+        setUserId(result.data['id']);
+      };
 
       if (response.status === 401) {
         document.querySelector(`.password-error`).innerHTML = 'Credentials not matching, check your info';

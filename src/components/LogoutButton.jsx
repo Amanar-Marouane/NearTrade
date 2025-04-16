@@ -1,28 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { Context } from '../context/UserContext';
 
 const LogoutButton = () => {
-    const navigate = useNavigate();
-    const host = import.meta.env.VITE_HOST;
-    const Logout = async (e) => {
+    const { logout } = useContext(Context);
+
+    const handleLogout = (e) => {
         e.preventDefault();
-        try {
-            const response = await fetch(`${host}/api/logout`, {
-                method: 'POST',
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                },
-                credentials: 'include',
-            })
-            if (response.status === 200) navigate('/login');
-        }
-        catch (error) {
-            console.log(error);
-        }
+        logout();
     }
+
     return (
-        <form onSubmit={Logout}>
+        <form onSubmit={handleLogout}>
             <button type="submit" className="px-5 py-3 border-1 text-black rounded-lg cursor-pointer">
                 LogOut
             </button>
