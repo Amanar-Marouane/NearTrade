@@ -58,7 +58,7 @@ const LogIn = () => {
 
   return (
     <GuestLayout>
-      <main className="min-h-[95vh] flex justify-center flex-col items-center">
+      <main className="min-h-[95vh] w-full flex justify-center flex-col items-center">
 
         <AuthSwitcher initialAuthType="login" />
 

@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans');
+
+.error404-container {
+    --blue: #0e0620;
+    --white: #fff;
+    --green: #2ccf6d;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Nunito Sans";
+    color: var(--blue);
+    font-size: 1em;
+    overflow: hidden;
+}
+
+.error404-container main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error404-container .container {
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+.error404-container .row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.error404-container .col-md-6 {
+    padding: 20px;
+}
+
+.error404-container svg {
+    height: auto;
+    max-height: 60vh;
+    width: 100%;
+    visibility: hidden;
+}
+
+.error404-container h1 {
+    font-size: 7.5em;
+    margin: 15px 0px;
+    font-weight: bold;
+}
+
+.error404-container h2 {
+    font-weight: bold;
+}
+
+.error404-container .btn {
+    z-index: 1;
+    overflow: hidden;
+    background: transparent;
+    position: relative;
+    padding: 8px 50px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1em;
+    letter-spacing: 2px;
+    transition: 0.2s ease;
+    font-weight: bold;
+    margin: 5px 0px;
+}
+
+.error404-container .btn.green {
+    border: 4px solid var(--green);
+    color: var(--blue);
+}
+
+.error404-container .btn.green:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0%;
+    height: 100%;
+    background: var(--green);
+    z-index: -1;
+    transition: 0.2s ease;
+}
+
+.error404-container .btn.green:hover {
+    color: var(--white);
+    background: var(--green);
+    transition: 0.2s ease;
+}
+
+.error404-container .btn.green:hover:before {
+    width: 100%;
+}
+
+@media screen and (max-width:768px) {
+    .error404-container {
+        height: 100vh;
+    }
+
+    .error404-container .container {
+        margin: 0;
+        padding: 20px;
+    }
+
+    .error404-container .row {
+        flex-direction: column;
+    }
+
+    .error404-container svg {
+        max-height: 40vh;
+    }
+
+    .error404-container h1 {
+        font-size: 5em;
+    }
+}

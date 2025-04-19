@@ -10,6 +10,7 @@ import ProductStore from './Pages/Products/Store';
 import UserContext from './context/UserContext';
 import UserProducts from './Pages/Products/UserProducts';
 import ProductUpdate from './Pages/Products/Update';
+import Error404 from './components/errors/Error404';
 
 const App = () => {
 
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/new" element={<ProductStore />} />
           <Route path="/product/update/:id" element={<ProductUpdate />} />
           <Route path="/products/me" element={<UserProducts />} />
+          <Route path="*" element={<Error404 label={'Home'} navigateTo={'/home'} />} />
         </Routes>
       </UserContext>
     </Router>
