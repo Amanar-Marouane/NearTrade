@@ -71,26 +71,30 @@ const Index = () => {
     }, []);
 
     useEffect(() => {
-        const filter = async () => {
-            try {
-                const response = await fetch(`${host}/api/product/filter`, {
-                    method: 'POST',
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify(filterData),
-                });
-                setStatus(response.status);
-                const result = await response.json();
-                setFilteredProducts(result.data);
-                setInFilterMode(true);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        filter();
+        const debounceTimer = setTimeout(() => {
+            const filter = async () => {
+                try {
+                    const response = await fetch(`${host}/api/product/filter`, {
+                        method: 'POST',
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json",
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify(filterData),
+                    });
+                    setStatus(response.status);
+                    const result = await response.json();
+                    setFilteredProducts(result.data);
+                    setInFilterMode(true);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+            filter();
+        }, 500)
+
+        return () => clearTimeout(debounceTimer);
     }, [filterData]);
 
     return (
