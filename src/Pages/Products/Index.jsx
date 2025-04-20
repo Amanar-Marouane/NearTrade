@@ -177,10 +177,10 @@ const Index = () => {
                         {products && products.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {!inFilterMode ? products.map((product) => (
-                                    <ItemCard key={product.id} id={product.id} img={`${host}${product.images[0]}`} name={product.name} price={product.price} location={product.location} category={product.category} status={product.status} />
+                                    <ItemCard key={product.id} item={product} />
                                 )) :
                                     filteredProducts.map((product) => (
-                                        <ItemCard key={product.id} id={product.id} img={`${host}${product.images[0]}`} name={product.name} price={product.price} location={product.location} category={product.category} status={product.status} />
+                                        <ItemCard key={product.id} item={product} />
                                     ))
                                 }
 

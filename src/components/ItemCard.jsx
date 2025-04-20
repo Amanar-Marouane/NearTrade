@@ -1,17 +1,50 @@
+import { useContext, useState } from "react";
 import { FaMapMarkerAlt, FaRegHeart, FaTag, FaTags } from "react-icons/fa";
+import clsx from 'clsx';
+import { Context } from "../context/UserContext";
 
-const ItemCard = ({ img, name, price, location, status, category, id }) => {
+const ItemCard = ({ item }) => {
+    const host = import.meta.env.VITE_HOST;
+    const { name, price, location, category, status, images, id, isFaved, favorites_count } = item;
+    const [favCount, setFavCount] = useState(favorites_count);
+    const [isFavorite, setIsFavorite] = useState(isFaved);
+    const { handleFavorite } = useContext(Context);
+
+    const toggleFavorite = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const id = e.currentTarget.id;
+        console.log(id);
+
+        setIsFavorite(prevIsFavorite => !prevIsFavorite);
+        const updatedCount = handleFavorite(id);
+        setFavCount(updatedCount);
+    };
+
     return (
         <a href={`/product/${id}`}>
             <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200">
                 <div className="relative">
                     <img
-                        src={img}
+                        src={`${host}${images[0]}`}
                         alt={name}
                         className="w-full h-48 object-contain bg-gray-100"
                     />
-                    <button className="absolute top-3 right-3 p-2 rounded-full bg-white hover:bg-gray-200 transition">
-                        <FaRegHeart className="text-gray-700 hover:text-black transition-colors" size={20} />
+                    <button
+                        id={id}
+                        className="absolute top-3 right-3 p-2 rounded-full bg-white hover:bg-gray-200 transition"
+                        onClick={toggleFavorite}
+                    >
+                        <FaRegHeart
+                            className={clsx(
+                                'transition-colors',
+                                isFavorite
+                                    ? 'hover:text-gray-700 fill-red-700'
+                                    : 'hover:text-red-700 fill-gray-700'
+                            )}
+                            size={20}
+                        />
+                        <p className="text-xs font-semibold text-gray-700">{favCount}</p>
                     </button>
                 </div>
                 <div className="p-4 space-y-2">

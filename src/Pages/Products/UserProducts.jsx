@@ -3,12 +3,13 @@ import ItemCard from "../../components/ItemCard"
 import { useNavigate } from "react-router-dom";
 import LoadingContent from "../../services/loadingContent";
 import { useState, useEffect } from "react";
+import NoProductsView from "../../components/products/NoProductsView";
 
 const UserProducts = () => {
     const navigate = useNavigate();
     const host = import.meta.env.VITE_HOST;
     const [status, setStatus] = useState(0);
-    const [products, setProducts] = useState(false);
+    const [products, setProducts] = useState(null);
 
     const UserProducts = async () => {
         try {
@@ -41,11 +42,17 @@ const UserProducts = () => {
                 <section>
                     <h1 className="font-bold text-3xl">My Products:</h1>
                 </section>
-                <section className="grid grid-cols-6 gap-4">
-                    {products && products.map(product => {
-                        return <ItemCard key={product.id} img={`${host}${product.images[0]}`} id={product.id} name={product.name} price={product.price} location={product.location} category={product.category} status={product.status} />
-                    })}
-                </section>
+                {products && products.length > 0 ? (
+                    <section className="grid grid-cols-6 gap-4">
+                        {
+                            products.map(product => (
+                                <ItemCard key={product.id} item={product} />
+                            ))
+                        }
+                    </section>
+                ) : (
+                    <NoProductsView />
+                )}
             </main>
         </AppLayout>
     )

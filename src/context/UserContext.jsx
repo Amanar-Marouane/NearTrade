@@ -63,6 +63,18 @@ const UserContext = ({ children }) => {
         }
     };
 
+    const handleFavorite = async (id) => {
+        try {
+            const response = await fetch(`${host}/api/favorite/${id}`, {
+                method: 'POST', credentials: 'include'
+            });
+            const res = await response.json();
+            return res.data.favorites_count;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const values = {
         user,
         setUser,
@@ -70,7 +82,8 @@ const UserContext = ({ children }) => {
         setUserId,
         isAuthenticated,
         setIsAuthenticated,
-        logout: handleLogout
+        logout: handleLogout,
+        handleFavorite,
     };
 
     useEffect(() => {

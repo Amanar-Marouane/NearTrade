@@ -2,6 +2,7 @@ import LogoutBtn from './LogoutButton';
 import RedirectButton from './RedirectButton';
 import { Context } from '../context/UserContext';
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
     const { isAuthenticated } = useContext(Context);
@@ -15,9 +16,9 @@ const Header = () => {
                         <a href="">
                             <img src="/notification-icon.svg" className="w-8 h-8" alt="Notifications" />
                         </a>
-                        <a href="">
+                        <Link to={'/favorites'}>
                             <img src="/favorite-icon.svg" className="w-8 h-8" alt="Favorites" />
-                        </a>
+                        </Link>
                     </div>
                     <li>
                         <RedirectButton href={'/home'} label={'Home'} />

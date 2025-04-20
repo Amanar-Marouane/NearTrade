@@ -9,7 +9,6 @@ import { Context } from '../../context/UserContext';
 const Index = () => {
     const navigate = useNavigate();
     const { userId, isAuthenticated, user } = useContext(Context);
-    const host = import.meta.env.VITE_HOST;
 
     useEffect(() => {
         if (!isAuthenticated) navigate('/login');
@@ -74,7 +73,7 @@ const Index = () => {
                     <h1 className="text-2xl font-bold text-gray-900">Active Listings</h1>
                     <div className="cards-container gap-8 grid grid-cols-6 w-full">
                         {user ? user.lastActiveProducts.map((product) => (
-                            <Item key={product.id} id={product.id} img={`${host}${product.images[0]}`} name={product.name} price={product.price} location={product.location} category={product.category} status={product.status} />
+                            <Item key={product.id} item={product} />
                         )) : "Loading..."}
                     </div>
                     {user ? user.lastActiveProducts.length >= 6 && (

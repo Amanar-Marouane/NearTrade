@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",
+    "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
     "gsap": "^3.12.7",
     "react": "^19.0.0",

@@ -21,16 +21,8 @@ const NoProductsView = () => {
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-2">No items found</h3>
             <p className="text-gray-600 mb-6 max-w-md">
-                We couldn't find any items matching your current filters. Try adjusting your search criteria or browse all categories.
+                We couldn't find any items.
             </p>
-            {/* <div className="space-x-4">
-                <button className="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-                    Reset Filters
-                </button>
-                <button className="px-5 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
-                    Browse All
-                </button>
-            </div> */}
         </div>
     );
 }

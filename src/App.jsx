@@ -11,6 +11,7 @@ import UserContext from './context/UserContext';
 import UserProducts from './Pages/Products/UserProducts';
 import ProductUpdate from './Pages/Products/Update';
 import Error404 from './components/errors/Error404';
+import Favorite from './Pages/Profile/Favorite';
 
 const App = () => {
 
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/favorites" element={<Favorite />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/product/:id" element={<ProductShow />} />
           <Route path="/new" element={<ProductStore />} />

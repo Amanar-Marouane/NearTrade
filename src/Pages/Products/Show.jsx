@@ -1,4 +1,4 @@
-import { FaStar } from "react-icons/fa";
+import { FaRegHeart, FaStar } from "react-icons/fa";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import RedirectButton from '../../components/RedirectButton';
 import ItemCard from '../../components/ItemCard';
@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from "react";
 import LoadingContent from "../../services/loadingContent";
 import DeleteButton from "../../components/products/DeleteButton";
 import { Context } from "../../context/UserContext";
+import clsx from "clsx";
 
 const Show = () => {
     const navigate = useNavigate();
@@ -19,11 +20,9 @@ const Show = () => {
     const [status, setStatus] = useState(0);
     const [currentIndex, setCurrentIndex] = useState(0);
     const { userId } = useContext(Context);
-
-    useEffect(() => {
-        console.log(userId);
-
-    }, [userId])
+    const [favCount, setFavCount] = useState(0);
+    const [isFavorite, setIsFavorite] = useState(false);
+    const { handleFavorite } = useContext(Context);
 
     const Product = async () => {
         try {
@@ -39,35 +38,44 @@ const Show = () => {
             const result = await response.json();
             if (response.status === 403) navigate('/home');
             setStatus(response.status);
-            setProduct(result.data['product']);
-            setProfile(result.data['user']);
+            setProfile(result.data.user);
+            setProduct(result.data.product);
+            setFavCount(result.data.product.favorites_count);
+            setIsFavorite(result.data.product.isFaved);
+
         } catch (error) {
             console.log(error);
         }
     }
 
+    const toggleFavorite = (id) => {
+        setIsFavorite(prevIsFavorite => !prevIsFavorite);
+        const updatedCount = handleFavorite(id);
+        setFavCount(updatedCount);
+    };
+
     useEffect(() => {
         Product();
     }, []);
 
-    const featuredProducts = [
-        {
-            name: "iPhone 13 Pro",
-            price: 899,
-            location: "Agadir-Dcheira",
-            rating: 4.8,
-            reviews: 15,
-            image: "/iphone.png"
-        },
-        {
-            name: "Modern Leather Sofa",
-            price: 599,
-            location: "Agadir-Dcheira",
-            rating: 4.9,
-            reviews: 23,
-            image: "/iphone.png"
-        },
-    ];
+    // const featuredProducts = [
+    //     {
+    //         name: "iPhone 13 Pro",
+    //         price: 899,
+    //         location: "Agadir-Dcheira",
+    //         rating: 4.8,
+    //         reviews: 15,
+    //         image: "/iphone.png"
+    //     },
+    //     {
+    //         name: "Modern Leather Sofa",
+    //         price: 599,
+    //         location: "Agadir-Dcheira",
+    //         rating: 4.9,
+    //         reviews: 23,
+    //         image: "/iphone.png"
+    //     },
+    // ];
 
 
     const goToPrevious = () => {
@@ -139,8 +147,30 @@ const Show = () => {
                     </div>
                     <div className="p-6 flex flex-col justify-between w-[50%] bg-white">
                         <div className="flex flex-col gap-5">
-                            <h1 className="text-4xl font-bold text-black">{product ? product.name : ''}</h1>
-                            <h1 className="text-3xl font-semibold text-black">{product ? product.price : '??'}DH</h1>
+                            <div className="flex items-start justify-between w-full">
+                                <div>
+                                    <h1 className="text-4xl font-bold text-black">{product ? product.name : ''}</h1>
+                                    <h1 className="text-3xl font-semibold text-black">{product ? product.price : '??'}DH</h1>
+                                </div>
+
+                                <div className="flex justify-center items-center flex-col">
+                                    <button
+                                        className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition"
+                                        onClick={() => toggleFavorite(id)}
+                                    >
+                                        <FaRegHeart
+                                            className={clsx(
+                                                'transition-colors',
+                                                isFavorite
+                                                    ? 'hover:text-gray-700 fill-red-700'
+                                                    : 'hover:text-red-700 fill-gray-700'
+                                            )}
+                                            size={20}
+                                        />
+                                        <p className="text-xm font-semibold text-gray-700">{favCount}</p>
+                                    </button>
+                                </div>
+                            </div>
 
                             <div className="flex items-center space-x-2">
                                 <FaStar size={16} className="text-black" />
@@ -197,9 +227,9 @@ const Show = () => {
                 <section className="space-y-8">
                     <h1 className="font-bold text-3xl">Similar Items:</h1>
                     <div className="grid grid-cols-6 gap-8">
-                        {featuredProducts.map((product, index) => (
-                            <ItemCard key={index} img={product.image} name={product.name} price={product.price} location={product.location} rating={product.rating} reviewsCount={product.reviewsCount} />
-                        ))}
+                        {/* {featuredProducts.map((product, index) => (
+                            <ItemCard key={index} item={product} />
+                        ))} */}
                     </div>
                 </section>
                 <section className="space-y-4">
