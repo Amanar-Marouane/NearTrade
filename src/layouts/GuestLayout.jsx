@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 const GuestLayout = ({ children }) => {
     const navigate = useNavigate();
-    const { isAuthenticated } = useContext(Context);
+    const { isAuthenticated, user } = useContext(Context);
 
     useEffect(() => {
-        if (isAuthenticated) navigate('/profile');
+        if (isAuthenticated) navigate('/profile/' + user?.id);
     }, [isAuthenticated]);
 
     return (

@@ -10,6 +10,7 @@ import LoadingContent from "../../services/loadingContent";
 import DeleteButton from "../../components/products/DeleteButton";
 import { Context } from "../../context/UserContext";
 import clsx from "clsx";
+import { Link } from "react-router-dom";
 
 const Show = () => {
     const navigate = useNavigate();
@@ -207,11 +208,15 @@ const Show = () => {
                         <div className="mt-10 border-t border-gray-200 pt-6">
                             <h1 className="text-xl font-bold text-black mb-4">Seller Info:</h1>
                             <div className="flex gap-4 items-center">
-                                <div className="h-12 w-12 rounded-full overflow-hidden bg-gray-200 border border-gray-300">
-                                    <img src={profile ? profile.profile : ''} alt={profile ? profile.name : ''} className="h-full w-full object-cover" />
-                                </div>
+                                <Link to={"/profile/" + profile?.id}>
+                                    <div className="h-12 w-12 rounded-full overflow-hidden bg-gray-200 border border-gray-300">
+                                        <img src={profile ? profile.profile : ''} alt={profile ? profile.name : ''} className="h-full w-full object-cover" />
+                                    </div>
+                                </Link>
                                 <div>
-                                    <h1 className="font-semibold text-black">{profile ? profile.name : ''}</h1>
+                                    <Link to={"/profile/" + profile?.id}>
+                                        <h1 className="font-semibold text-black">{profile ? profile.name : ''}</h1>
+                                    </Link>
                                     <div className="flex items-center space-x-2 my-1">
                                         <FaStar size={14} className="text-black" />
                                         <span className="text-sm text-gray-700">

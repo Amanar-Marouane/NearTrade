@@ -6,12 +6,20 @@ import { useNavigate } from "react-router-dom";
 
 const AppLayout = ({ children }) => {
     const navigate = useNavigate();
-    const { error, success, isAuthenticated } = useContext(Context);
+    const { error, success, setError, setSuccess, isAuthenticated } = useContext(Context);
 
     useEffect(() => {
         if (!isAuthenticated) navigate('/login');
     }, []);
-    
+
+    useEffect(() => {
+        const debounceTimer = setTimeout(() => {
+            setError('');
+            setSuccess('');
+        }, 3000)
+        return () => clearTimeout(debounceTimer);
+    }, [error, success]);
+
     return (
         <>
             <Header></Header>

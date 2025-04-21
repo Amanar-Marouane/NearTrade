@@ -1,14 +1,31 @@
 import { FaCamera, FaPen, FaStar, } from "react-icons/fa";
 import Item from './../../components/ItemCard';
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import AppLayout from "../../layouts/AppLayout";
 import RedirectButton from "../../components/RedirectButton";
 import { Context } from '../../context/UserContext';
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const Index = () => {
     const host = import.meta.env.VITE_HOST;
-    const { userId, user, setError, setSuccess } = useContext(Context);
+    const { id } = useParams();
+    const [user, setUser] = useState(null);
+    const { setError, setSuccess, userId } = useContext(Context);
+
+    const User = async () => {
+        try {
+            const response = await fetch(`${host}/api/profile/${id}`, {
+                credentials: 'include',
+            });
+            const res = await response.json();
+            setUser(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => { User() }, []);
 
     const handleImageChange = async (e) => {
         const file = e.target.files[0];
@@ -58,12 +75,16 @@ const Index = () => {
                                 alt="User Profile Image"
                                 className="w-32 h-32 rounded-full border-4 border-white object-cover shadow-lg"
                             />
-                            <label htmlFor="image-upload" className="absolute bottom-0 right-0">
-                                <FaCamera size={15} className="cursor-pointer" />
-                            </label>
-                            <form encType="multipart/form-data">
-                                <input name="profile" onChange={handleImageChange} type="file" id="image-upload" className="hidden" />
-                            </form>
+                            {user && user.id === userId && (
+                                <>
+                                    <label htmlFor="image-upload" className="absolute bottom-0 right-0">
+                                        <FaCamera size={15} className="cursor-pointer" />
+                                    </label>
+                                    <form encType="multipart/form-data">
+                                        <input name="profile" onChange={handleImageChange} type="file" id="image-upload" className="hidden" />
+                                    </form>
+                                </>
+                            )}
                         </div>
                     </div>
                 </section>
@@ -74,9 +95,11 @@ const Index = () => {
                             <div className="space-y-3">
                                 <div className="flex justify-center items-center gap-4">
                                     <h1 className="text-2xl font-bold text-gray-900">{user ? user.name : "Loading..."}</h1>
-                                    <Link to={'/profile/update'}>
-                                        <FaPen className="cursor-pointer" size={15} />
-                                    </Link>
+                                    {user && user.id === userId && (
+                                        <Link to={'/profile/update'}>
+                                            <FaPen className="cursor-pointer" size={15} />
+                                        </Link>
+                                    )}
                                 </div>
                                 <p className="text-gray-600 text-sm">Member since January {user ? user.member_since : "Loading..."}</p>
 
@@ -92,8 +115,10 @@ const Index = () => {
                                 </div>
                             </div>
                             <div className="flex gap-2">
-                                <RedirectButton label={'Message'} href={`/message/${userId}`}></RedirectButton>
-                                <RedirectButton label={'Report'} href={`/report/${userId}`}></RedirectButton>
+                                {user && user.id !== userId && (
+                                    <RedirectButton label={'Message'} href={`/chat/${user.id}`} />
+                                )}
+                                <RedirectButton label={'Report'} href={`/report/${user?.id}`}></RedirectButton>
                             </div>
                         </div>
 
