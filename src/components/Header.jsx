@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
-    const { isAuthenticated } = useContext(Context);
+    const { isAuthenticated, userId } = useContext(Context);
 
     return (
         <header className="w-full p-2">
@@ -13,9 +13,9 @@ const Header = () => {
                 <a href="/home"><h1 className="font-bold text-3xl">NearTrade</h1></a>
                 <ul className="flex justify-between items-center gap-4">
                     <div className="flex gap-2">
-                        <a href="">
-                            <img src="/notification-icon.svg" className="w-8 h-8" alt="Notifications" />
-                        </a>
+                        <Link to={'/chat'}>
+                            <img src="/chat-icon.svg" className="w-8 h-8" alt="Chat" />
+                        </Link>
                         <Link to={'/favorites'}>
                             <img src="/favorite-icon.svg" className="w-8 h-8" alt="Favorites" />
                         </Link>
@@ -24,7 +24,7 @@ const Header = () => {
                         <RedirectButton href={'/home'} label={'Home'} />
                     </li>
                     <li>
-                        <RedirectButton href={'/profile'} label={'Profile'} />
+                        <RedirectButton href={'/profile/' + userId} label={'Profile'} />
                     </li>
                     <li>
                         <RedirectButton href={'/new'} label={'Post an item'} />

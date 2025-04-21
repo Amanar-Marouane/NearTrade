@@ -2,11 +2,13 @@ import AppLayout from '../../layouts/AppLayout';
 import Input from '../../components/Input';
 import FormButton from '../../components/FormButton';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Select from '../../components/Select';
+import { Context } from '../../context/UserContext';
 
 const Store = () => {
     const navigate = useNavigate();
+    const { userId } = useContext(Context);
     const host = import.meta.env.VITE_HOST;
     const [categories, setCategories] = useState(null);
     const [status, setSatus] = useState(null);
@@ -91,7 +93,7 @@ const Store = () => {
                 element.innerHTML = '';
             });
 
-            const response = await fetch(`${host}/api/product/store`, {
+            const response = await fetch(`${host}/api/products`, {
                 method: "POST",
                 headers: {
                     "Accept": "application/json",
@@ -103,7 +105,7 @@ const Store = () => {
             const result = await response.json();
 
             if (response.status === 201) {
-                navigate('/profile');
+                navigate('/profile/' + userId);
             }
             console.log(result);
 
