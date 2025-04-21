@@ -192,8 +192,11 @@ const Show = () => {
                             </div>
 
                             <div className="flex gap-6 pt-3">
-                                <RedirectButton label={'Secure Purchase'} />
-                                <RedirectButton label={'Message Seller'} />
+                                {product && product.user_id !== userId && (() => (
+                                    <>
+                                        <RedirectButton label={'Message Seller'} />
+                                    </>
+                                ))()}
 
                                 {product && product.user_id === userId && (() => (
                                     <>
