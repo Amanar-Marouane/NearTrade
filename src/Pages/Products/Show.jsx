@@ -26,7 +26,7 @@ const Show = () => {
 
     const Product = async () => {
         try {
-            const response = await fetch(`${host}/api/product/${id}`, {
+            const response = await fetch(`${host}/api/products/${id}`, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",

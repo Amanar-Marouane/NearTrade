@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Input = ({ type, id, title, src, placeholder, name, value = '' }) => {
+const Input = ({ type, id, title, src, placeholder, name, value = '', onChange = null }) => {
     const [isPasswordVisible, setPasswordVisible] = React.useState(false);
     const [inputValue, setInputValue] = useState('');
 
@@ -30,7 +30,10 @@ const Input = ({ type, id, title, src, placeholder, name, value = '' }) => {
                     id={id}
                     placeholder={placeholder || ""}
                     value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
+                    onChange={(e) => {
+                        setInputValue(e.target.value);
+                        onChange && onChange(e);
+                    }}
                 />
                 {type === "password" && (
                     <button type="button" className="cursor-pointer" onClick={togglePassword}>

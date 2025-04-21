@@ -1,18 +1,44 @@
-import { FaStar, } from "react-icons/fa";
+import { FaCamera, FaPen, FaStar, } from "react-icons/fa";
 import Item from './../../components/ItemCard';
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import AppLayout from "../../layouts/AppLayout";
 import RedirectButton from "../../components/RedirectButton";
 import { Context } from '../../context/UserContext';
+import { Link } from "react-router-dom";
 
 const Index = () => {
-    const navigate = useNavigate();
-    const { userId, isAuthenticated, user } = useContext(Context);
+    const host = import.meta.env.VITE_HOST;
+    const { userId, user, setError, setSuccess } = useContext(Context);
 
-    useEffect(() => {
-        if (!isAuthenticated) navigate('/login');
-    }, []);
+    const handleImageChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) {
+            setError('Please select an image file');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('profile', file);
+
+        try {
+            const response = await fetch(`${host}/api/imgupdate`, {
+                method: 'POST',
+                credentials: 'include',
+                body: formData,
+            });
+
+            if (response.status !== 204) {
+                const res = await response.json();
+                throw new Error(res.message || 'Failed to update profile image');
+            }
+
+            setSuccess('Profile image updated successfully');
+            window.location.reload();
+        } catch (error) {
+            console.error('Error updating profile image:', error);
+            setError('Failed to update profile image. Please try again.');
+        }
+    };
 
     return (
         < AppLayout >
@@ -32,6 +58,12 @@ const Index = () => {
                                 alt="User Profile Image"
                                 className="w-32 h-32 rounded-full border-4 border-white object-cover shadow-lg"
                             />
+                            <label htmlFor="image-upload" className="absolute bottom-0 right-0">
+                                <FaCamera size={15} className="cursor-pointer" />
+                            </label>
+                            <form encType="multipart/form-data">
+                                <input name="profile" onChange={handleImageChange} type="file" id="image-upload" className="hidden" />
+                            </form>
                         </div>
                     </div>
                 </section>
@@ -40,7 +72,12 @@ const Index = () => {
                     <div className="bg-white rounded-xl p-6 shadow-sm">
                         <div className="flex justify-between items-start">
                             <div className="space-y-3">
-                                <h1 className="text-2xl font-bold text-gray-900">{user ? user.name : "Loading..."}</h1>
+                                <div className="flex justify-center items-center gap-4">
+                                    <h1 className="text-2xl font-bold text-gray-900">{user ? user.name : "Loading..."}</h1>
+                                    <Link to={'/profile/update'}>
+                                        <FaPen className="cursor-pointer" size={15} />
+                                    </Link>
+                                </div>
                                 <p className="text-gray-600 text-sm">Member since January {user ? user.member_since : "Loading..."}</p>
 
                                 <div className="flex items-center gap-6 text-sm">

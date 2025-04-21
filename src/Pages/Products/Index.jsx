@@ -25,7 +25,7 @@ const Index = () => {
 
     const data = async () => {
         try {
-            const response = await fetch(`${host}/api/product/add`, {
+            const response = await fetch(`${host}/api/products/add`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -74,7 +74,7 @@ const Index = () => {
         const debounceTimer = setTimeout(() => {
             const filter = async () => {
                 try {
-                    const response = await fetch(`${host}/api/product/filter`, {
+                    const response = await fetch(`${host}/api/products/filter`, {
                         method: 'POST',
                         headers: {
                             "Accept": "application/json",

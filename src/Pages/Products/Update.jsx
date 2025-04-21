@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Select from '../../components/Select';
 import LoadingContent from '../../services/loadingContent';
+import { Link } from 'react-router-dom';
 
 const Update = () => {
     const { id } = useParams();
@@ -20,7 +21,7 @@ const Update = () => {
 
     const data = async () => {
         try {
-            const response = await fetch(`${host}/api/product/add`, {
+            const response = await fetch(`${host}/api/products/add`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -55,7 +56,7 @@ const Update = () => {
             const result = await response.json();
             const prod = result.data['product'];
             if (!prod['canUpdate']) navigate('/products/me');
-            
+
             setProduct(prod);
         } catch (error) {
             console.log(error);
@@ -200,9 +201,9 @@ const Update = () => {
             <LoadingContent status={fetchStatus} />
             <main className='bg-gray-100 min-h-screen flex items-center justify-center p-4'>
                 <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-2xl">
-                    <a href="/products/me">
+                    <Link to={'/profile'}>
                         <img src="/back-icon.svg" alt="Get Back To The List" className='h-8 w-8' />
-                    </a>
+                    </Link>
 
                     <h1 className="text-2xl font-bold text-center mb-8 text-black">Edit Your Item</h1>
 

@@ -11,6 +11,8 @@ const UserContext = ({ children }) => {
     const [userId, setUserId] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
+    const [success, setSuccess] = useState('');
+    const [error, setError] = useState('');
 
     const IsLogged = async () => {
         try {
@@ -76,6 +78,7 @@ const UserContext = ({ children }) => {
     }
 
     const values = {
+        IsLogged,
         user,
         setUser,
         userId,
@@ -84,6 +87,10 @@ const UserContext = ({ children }) => {
         setIsAuthenticated,
         logout: handleLogout,
         handleFavorite,
+        error,
+        setError,
+        success,
+        setSuccess,
     };
 
     useEffect(() => {

@@ -12,6 +12,7 @@ import UserProducts from './Pages/Products/UserProducts';
 import ProductUpdate from './Pages/Products/Update';
 import Error404 from './components/errors/Error404';
 import Favorite from './Pages/Profile/Favorite';
+import UserUpdate from './Pages/Profile/Update';
 
 const App = () => {
 
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/favorites" element={<Favorite />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/update" element={<UserUpdate />} />
           <Route path="/product/:id" element={<ProductShow />} />
           <Route path="/new" element={<ProductStore />} />
           <Route path="/product/update/:id" element={<ProductUpdate />} />

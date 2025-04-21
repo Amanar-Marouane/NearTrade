@@ -16,7 +16,7 @@ const Store = () => {
 
     const data = async () => {
         try {
-            const response = await fetch(`${host}/api/product/add`, {
+            const response = await fetch(`${host}/api/products/add`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
