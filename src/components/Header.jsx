@@ -23,9 +23,11 @@ const Header = () => {
                     <li>
                         <RedirectButton href={'/home'} label={'Home'} />
                     </li>
-                    <li>
-                        <RedirectButton href={'/profile/' + userId} label={'Profile'} />
-                    </li>
+                    {userId && (
+                        <li>
+                            <RedirectButton href={'/profile/' + userId} label={'Profile'} />
+                        </li>
+                    )}
                     <li>
                         <RedirectButton href={'/new'} label={'Post an item'} />
                     </li>

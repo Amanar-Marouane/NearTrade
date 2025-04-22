@@ -1,36 +1,65 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FormButton from "../FormButton";
 import { useContext, useEffect, useRef, useState } from "react";
 import Pusher from 'pusher-js';
 import { Context } from "../../context/UserContext";
+import LoadingContent from "../../services/loadingContent";
 
 const Convo = () => {
     const host = import.meta.env.VITE_HOST;
+    const navigate = useNavigate();
     const { id } = useParams();
     const { userId, user, setError } = useContext(Context);
     const [message, setMessage] = useState("");
     const [chatId, setChatId] = useState(null);
     const [conversation, setConversation] = useState([]);
     const [otherUser, setOtherUser] = useState(null);
+    const [access, setAccess] = useState(false);
+    const [status, setStatus] = useState(null);
 
     useEffect(() => {
         if (id && userId) {
-            const getChatId = async () => {
+            const idChecker = async () => {
                 try {
-                    const response = await fetch(`${host}/api/chat_id/${id}/${userId}`, {
+                    const response = await fetch(`${host}/api/is_user/${id}`, {
                         credentials: 'include',
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                        }
                     });
+                    setStatus(response.status);
+
                     const res = await response.json();
-                    setChatId(res.data);
+                    setAccess(res.data);
+                    if (!res.data) navigate('/chat');
                 } catch (error) {
                     console.log(error);
                 }
-            };
-            getChatId();
+            }
+            idChecker();
         }
     }, []);
 
     useEffect(() => {
+        if (!access) return;
+
+        const getChatId = async () => {
+            try {
+                const response = await fetch(`${host}/api/chat_id/${id}/${userId}`, {
+                    credentials: 'include',
+                });
+                const res = await response.json();
+                setChatId(res.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getChatId();
+    }, [access]);
+
+    useEffect(() => {
+        if (!access) return;
         if (!chatId) return;
 
         const Index = async () => {
@@ -77,7 +106,7 @@ const Convo = () => {
             channel.unsubscribe();
             pusher.disconnect();
         };
-    }, [id, userId, chatId]);
+    }, [id, userId, chatId, access]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -129,6 +158,8 @@ const Convo = () => {
 
     return (
         <section className="w-full h-full flex flex-col">
+            <LoadingContent status={status} />
+
             <div className="p-4 border-b border-gray-200">
                 <h1 className="text-xl font-semibold">Conversation with {otherUser ?? '...'}</h1>
             </div>

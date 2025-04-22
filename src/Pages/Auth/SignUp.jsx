@@ -2,13 +2,13 @@ import Input from "../../components/Input";
 import OAuth from "../../components/OAuth";
 import FormButton from "../../components/FormButton";
 import AuthSwitcher from '../../components/AuthSwitcher';
-import { useNavigate } from 'react-router-dom';
 import GuestLayout from "../../layouts/GuestLayout";
+import { Context } from "../../context/UserContext";
+import { useContext } from "react";
 
 const SignUp = () => {
-  const navigate = useNavigate();
-
   const host = import.meta.env.VITE_HOST;
+  const { setIsAuthenticated, setUser, setUserId } = useContext(Context);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +26,11 @@ const SignUp = () => {
         body: formData,
       });
 
-      if (response.status === 201 || response.status === 403) navigate('/profile');
+      if (response.status === 201 || response.status === 403) {
+        setIsAuthenticated(true);
+        setUser(result.data);
+        setUserId(result.data['id']);
+      }
 
       const result = await response.json();
 
