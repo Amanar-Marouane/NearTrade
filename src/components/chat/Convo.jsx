@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import FormButton from "../FormButton";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Pusher from 'pusher-js';
 import { Context } from "../../context/UserContext";
 
@@ -11,6 +11,7 @@ const Convo = () => {
     const [message, setMessage] = useState("");
     const [chatId, setChatId] = useState(null);
     const [conversation, setConversation] = useState([]);
+    const [otherUser, setOtherUser] = useState(null);
 
     useEffect(() => {
         if (id && userId) {
@@ -39,13 +40,14 @@ const Convo = () => {
                 });
                 const res = await response.json();
                 setConversation(res.data);
+                setOtherUser(res.message);
             } catch (error) {
                 console.log(error);
             }
         };
         Index();
 
-        // Pusher.logToConsole = true;
+        Pusher.logToConsole = true;
 
         const pusher = new Pusher('3c0a9b14f19d9778fed6', {
             cluster: 'mt1',
@@ -115,15 +117,25 @@ const Convo = () => {
         }
     };
 
+    const messageEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [conversation]);
+
     return (
         <section className="w-full h-full flex flex-col">
             <div className="p-4 border-b border-gray-200">
-                <h1 className="text-xl font-semibold">Conversation with John Smith</h1>
+                <h1 className="text-xl font-semibold">Conversation with {otherUser ?? '...'}</h1>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                {conversation.map((msg) => (
-                    <div key={msg.id} className={`flex ${msg.isMe ? "justify-end" : "justify-start"}`}>
+                {conversation.map((msg, index) => (
+                    <div key={index} className={`flex ${msg.isMe ? "justify-end" : "justify-start"}`}>
                         <div className={`max-w-[70%] rounded-lg p-3 ${msg.isMe ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}>
                             <p className="font-medium text-sm">{msg.isMe ? 'Me' : msg.sender}</p>
                             <p>{msg.message}</p>
@@ -131,7 +143,9 @@ const Convo = () => {
                         </div>
                     </div>
                 ))}
+                <div ref={messageEndRef} />
             </div>
+
 
             <div className="p-4 border-t border-gray-200">
                 <form onSubmit={handleSubmit} className="flex justify-between gap-4">
