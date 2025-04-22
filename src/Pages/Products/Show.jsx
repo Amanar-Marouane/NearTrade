@@ -23,7 +23,11 @@ const Show = () => {
     const { userId } = useContext(Context);
     const [favCount, setFavCount] = useState(0);
     const [isFavorite, setIsFavorite] = useState(false);
-    const { handleFavorite } = useContext(Context);
+    const { handleFavorite, setSuccess } = useContext(Context);
+    const [showOfferForm, setShowOfferForm] = useState(false);
+    const [offerPrice, setOfferPrice] = useState('');
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [error, setError] = useState('');
 
     const Product = async () => {
         try {
@@ -59,26 +63,6 @@ const Show = () => {
         Product();
     }, []);
 
-    // const featuredProducts = [
-    //     {
-    //         name: "iPhone 13 Pro",
-    //         price: 899,
-    //         location: "Agadir-Dcheira",
-    //         rating: 4.8,
-    //         reviews: 15,
-    //         image: "/iphone.png"
-    //     },
-    //     {
-    //         name: "Modern Leather Sofa",
-    //         price: 599,
-    //         location: "Agadir-Dcheira",
-    //         rating: 4.9,
-    //         reviews: 23,
-    //         image: "/iphone.png"
-    //     },
-    // ];
-
-
     const goToPrevious = () => {
         if (!product.images || product.images.length <= 1) return;
         const isFirstImage = currentIndex === 0;
@@ -94,6 +78,41 @@ const Show = () => {
     };
 
     const showControls = product.images && product.images.length > 1;
+
+    const handleOfferSubmit = (e) => {
+        e.preventDefault();
+        const price = parseFloat(offerPrice);
+
+        if (isNaN(price) || price <= 0) {
+            setError('Please enter a valid positive number');
+            return;
+        }
+
+        setShowConfirmation(true);
+    };
+
+    const confirmOffer = async () => {
+        try {
+            const response = await fetch(`${host}/api/deal/${product.id}`, {
+                credentials: 'include',
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 'offer': offerPrice }),
+            });
+            const res = await response.json();
+            setSuccess(res.message);
+            navigate(`/chat/${profile.id}`);
+        } catch (error) {
+            console.log(error);
+        }
+        setShowOfferForm(false);
+        setShowConfirmation(false);
+        setOfferPrice('');
+        setError('');
+    };
 
     return (
         <AppLayout>
@@ -194,7 +213,14 @@ const Show = () => {
                             <div className="flex gap-6 pt-3">
                                 {product && product.user_id !== userId && (() => (
                                     <>
-                                        <RedirectButton label={'Message Seller'} />
+                                        <button
+                                            type="button"
+                                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+                                            onClick={() => setShowOfferForm(true)}
+                                        >
+                                            Offre a deal
+                                        </button>
+                                        <RedirectButton label={'Message Seller'} href={`/chat/${product.user_id}`} />
                                     </>
                                 ))()}
 
@@ -232,14 +258,6 @@ const Show = () => {
                         </div>
                     </div>
                 </section>
-                <section className="space-y-8">
-                    <h1 className="font-bold text-3xl">Similar Items:</h1>
-                    <div className="grid grid-cols-6 gap-8">
-                        {/* {featuredProducts.map((product, index) => (
-                            <ItemCard key={index} item={product} />
-                        ))} */}
-                    </div>
-                </section>
                 <section className="space-y-4">
                     <h1 className="font-bold text-3xl">Costumers Reviews:</h1>
                     <div className="flex gap-2">
@@ -261,6 +279,83 @@ const Show = () => {
                         <Comment img={'/public/profile image.jpg'} name={'Marouane Allaoui'} rating={'4.8'} comment={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero sint a aut doloribus minima sit veritatis culpa inventore nemo non optio, sed recusandae, quam illo perspiciatis aliquam ex veniam. Voluptates.'} />
                     </div>
                 </section>
+
+                {showOfferForm && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white p-6 rounded-lg w-96">
+                            <h2 className="text-xl font-semibold mb-4">Make an Offer</h2>
+                            <form onSubmit={handleOfferSubmit}>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                                        Your Offer (DH)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        name="offre"
+                                        value={offerPrice}
+                                        onChange={(e) => {
+                                            setOfferPrice(e.target.value);
+                                            setError('');
+                                        }}
+                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        placeholder="Enter your offer"
+                                        min="0"
+                                        step="0.01"
+                                        required
+                                    />
+                                    {error && (
+                                        <p className="text-red-500 text-xs mt-1">{error}</p>
+                                    )}
+                                </div>
+                                <div className="flex justify-end gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setShowOfferForm(false);
+                                            setError('');
+                                        }}
+                                        className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+                                    >
+                                        Submit Offer
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
+
+                {/* Confirmation Modal */}
+                {showConfirmation && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white p-6 rounded-lg w-96">
+                            <h2 className="text-xl font-semibold mb-4">Confirm Your Offer</h2>
+                            <p className="mb-4">Are you sure you want to offer {offerPrice} DH for this item?</p>
+                            <div className="flex justify-end gap-2">
+                                <button
+                                    onClick={() => {
+                                        setShowConfirmation(false);
+                                        setError('');
+                                    }}
+                                    className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={confirmOffer}
+                                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+                                >
+                                    Yes, Submit Offer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </main>
         </AppLayout>
     )

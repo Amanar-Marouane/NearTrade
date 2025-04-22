@@ -9,7 +9,7 @@ const Convo = () => {
     const host = import.meta.env.VITE_HOST;
     const navigate = useNavigate();
     const { id } = useParams();
-    const { userId, user, setError } = useContext(Context);
+    const { userId, setError } = useContext(Context);
     const [message, setMessage] = useState("");
     const [chatId, setChatId] = useState(null);
     const [conversation, setConversation] = useState([]);
@@ -76,7 +76,7 @@ const Convo = () => {
         };
         Index();
 
-        Pusher.logToConsole = true;
+        // Pusher.logToConsole = true;
 
         const pusher = new Pusher('3c0a9b14f19d9778fed6', {
             cluster: 'mt1',
@@ -88,14 +88,22 @@ const Convo = () => {
 
         channel.bind('chatEvent', (data) => {
             if (data.message.sender_id !== userId) {
+                console.log(data);
+
                 setConversation((prev) => [
                     ...prev,
                     {
                         id: data.message.id,
                         sender: data.message.sender,
-                        message: data.message.body,
+                        message: data.message.message,
                         timestamp: data.message.timestamp,
-                        isMe: data.message.sender_id === userId ? true : false,
+                        sender_id: data.message.sender_id,
+                        receiver_id: data.message.receiver_id,
+                        type: data.message.type || 'message',
+                        status: data.message.status,
+                        product: data.message.product,
+                        offer: data.message.offer,
+                        chat_id: data.message.chat_id,
                     }
                 ]);
             }
@@ -114,16 +122,7 @@ const Convo = () => {
         setMessage('');
 
         if (message !== '') {
-            setConversation((prev) => [
-                ...prev,
-                {
-                    id: user.id,
-                    sender: user.name,
-                    message: messageData,
-                    timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
-                    isMe: true,
-                }
-            ]);
+
             try {
                 const response = await fetch(`${host}/api/message`, {
                     credentials: 'include',
@@ -134,12 +133,16 @@ const Convo = () => {
                     body: JSON.stringify({
                         message: messageData,
                         receiver_id: id,
-                        sender_id: userId
                     }),
                 });
                 if (!response.ok) {
                     setError('Check your connection');
                 }
+                const res = await response.json();
+                setConversation((prev) => [
+                    ...prev,
+                    res.data
+                ]);
             } catch (error) {
                 console.log(error);
             }
@@ -166,17 +169,48 @@ const Convo = () => {
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {conversation.map((msg, index) => (
-                    <div key={index} className={`flex ${msg.isMe ? "justify-end" : "justify-start"}`}>
-                        <div className={`max-w-[70%] rounded-lg p-3 ${msg.isMe ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"}`}>
-                            <p className="font-medium text-sm">{msg.isMe ? 'Me' : msg.sender}</p>
-                            <p>{msg.message}</p>
+                    <div key={index} className={`flex ${msg.sender_id === userId ? "justify-end" : "justify-start"}`}>
+                        <div className={`max-w-[70%] rounded-lg p-3 ${msg.type === 'Offer'
+                            ? 'bg-yellow-100 border-2 border-yellow-300 text-gray-800'
+                            : msg.sender_id !== userId
+                                ? "bg-blue-500 text-white"
+                                : "bg-gray-200 text-gray-800"
+                            }`}>
+                            <p className="font-medium text-sm">{msg.sender_id === userId ? 'Me' : otherUser}</p>
+                            {msg.type === 'Offer' ? (
+                                <div className="space-y-2">
+                                    <p>{msg.message}</p>
+                                    <p className="font-semibold">{msg.offer} DH</p>
+                                    {msg.status === 'Pending' && msg.sender_id !== userId && (
+                                        <div className="flex gap-2 mt-2">
+                                            <button
+                                                className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                                            >
+                                                Accept
+                                            </button>
+                                            <button
+                                                className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                                            >
+                                                Decline
+                                            </button>
+                                        </div>
+                                    )}
+                                    {msg.status && msg.status !== 'Pending' && (
+                                        <p className={`mt-2 font-medium ${msg.status === 'Accepted' ? 'text-green-600' : 'text-red-600'
+                                            }`}>
+                                            Status: {msg.status}
+                                        </p>
+                                    )}
+                                </div>
+                            ) : (
+                                <p>{msg.message}</p>
+                            )}
                             <p className="text-xs mt-1 opacity-70">{msg.timestamp}</p>
                         </div>
                     </div>
                 ))}
                 <div ref={messageEndRef} />
             </div>
-
 
             <div className="p-4 border-t border-gray-200">
                 <form onSubmit={handleSubmit} className="flex justify-between gap-4">

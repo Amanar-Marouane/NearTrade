@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import AppLayout from "../../layouts/AppLayout"
 import { Link, Outlet } from "react-router-dom"
 
+
 const Chat = () => {
     const host = import.meta.env.VITE_HOST;
     const [recentChats, setRecentChats] = useState(null);
