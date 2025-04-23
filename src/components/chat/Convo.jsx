@@ -9,7 +9,7 @@ const Convo = () => {
     const host = import.meta.env.VITE_HOST;
     const navigate = useNavigate();
     const { id } = useParams();
-    const { userId, setError } = useContext(Context);
+    const { userId, setError, setSuccess } = useContext(Context);
     const [message, setMessage] = useState("");
     const [chatId, setChatId] = useState(null);
     const [conversation, setConversation] = useState([]);
@@ -159,6 +159,52 @@ const Convo = () => {
         scrollToBottom();
     }, [conversation]);
 
+    const handleAccept = async (e) => {
+        try {
+            const response = await fetch(`${host}/api/offer/accept/${e.target.id}`, {
+                credentials: 'include',
+                method: 'POST',
+            });
+
+            const res = await response.json();
+            if (response.status === 404) setError(res.message);
+            if (response.status === 200) {
+                setSuccess(res.message);
+                setConversation(prev =>
+                    [
+                        ...prev.filter(chat => chat.id !== res.data.id),
+                        res.data
+                    ]
+                );
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleRefuse = async (e) => {
+        try {
+            const response = await fetch(`${host}/api/offer/refuse/${e.target.id}`, {
+                credentials: 'include',
+                method: 'POST',
+            });
+
+            const res = await response.json();
+            if (response.status === 404) setError(res.message);
+            if (response.status === 200) {
+                setSuccess(res.message);
+                setConversation(prev =>
+                    [
+                        ...prev.filter(chat => chat.id !== res.data.id),
+                        res.data
+                    ]
+                );
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <section className="w-full h-full flex flex-col">
             <LoadingContent status={status} />
@@ -183,12 +229,12 @@ const Convo = () => {
                                     <p className="font-semibold">{msg.offer} DH</p>
                                     {msg.status === 'Pending' && msg.sender_id !== userId && (
                                         <div className="flex gap-2 mt-2">
-                                            <button
+                                            <button id={msg.id} onClick={handleAccept}
                                                 className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
                                             >
                                                 Accept
                                             </button>
-                                            <button
+                                            <button id={msg.id} onClick={handleRefuse}
                                                 className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                                             >
                                                 Decline
