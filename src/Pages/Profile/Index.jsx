@@ -6,6 +6,7 @@ import RedirectButton from "../../components/RedirectButton";
 import { Context } from '../../context/UserContext';
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import NoProductsView from "../../components/products/NoProductsView";
 
 const Index = () => {
     const host = import.meta.env.VITE_HOST;
@@ -133,14 +134,23 @@ const Index = () => {
 
                 <section className="px-8 mb-5 flex flex-col gap-4 justify-center items-center">
                     <h1 className="text-2xl font-bold text-gray-900">Active Listings</h1>
-                    <div className="cards-container gap-8 grid grid-cols-6 w-full">
-                        {user ? user.lastActiveProducts.map((product) => (
-                            <Item key={product.id} item={product} />
-                        )) : "Loading..."}
-                    </div>
-                    {user ? user.lastActiveProducts.length >= 6 && (
-                        <RedirectButton label={'See All Listings'} href='/products/me'></RedirectButton>
-                    ) : ''}
+
+                    {user && user.lastActiveProducts && user.lastActiveProducts.length <= 0 ? (
+                        <NoProductsView />
+                    ) : user ? (
+                        <>
+                            <div className="cards-container gap-8 grid grid-cols-6 w-full">
+                                {user.lastActiveProducts.map((product) => (
+                                    <Item key={product.id} item={product} />
+                                ))}
+                            </div>
+                            {user.lastActiveProducts.length >= 6 && (
+                                <RedirectButton label="See All Listings" href="/products/me" />
+                            )}
+                        </>
+                    ) : (
+                        "Loading..."
+                    )}
                 </section>
             </main>
         </AppLayout >

@@ -5,6 +5,7 @@ import AuthSwitcher from '../../components/AuthSwitcher';
 import GuestLayout from "../../layouts/GuestLayout";
 import { Context } from "../../context/UserContext";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 
 const LogIn = () => {
   const { setIsAuthenticated, setUser, setUserId } = useContext(Context);
@@ -77,6 +78,12 @@ const LogIn = () => {
             <Input title="Password" id="password" name="password" type="password" placeholder="Create a password" src="/lock-icon.svg" />
 
             <FormButton title={"Log In"}></FormButton>
+
+            <Link to={'/reset-password'} className="w-full">
+              <p className="text-sm text-blue-600 hover:underline cursor-pointer">
+                Forgot your password? Click here
+              </p>
+            </Link>
           </form>
         </section>
 

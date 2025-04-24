@@ -15,6 +15,7 @@ import Favorite from './Pages/Profile/Favorite';
 import UserUpdate from './Pages/Profile/Update';
 import Chat from './Pages/Profile/Chat';
 import Convo from './components/chat/Convo';
+import PasswordReset from './Pages/Profile/PasswordReset';
 const App = () => {
 
   return (
@@ -37,6 +38,8 @@ const App = () => {
           <Route path="/chat" element={<Chat />} >
             <Route path=":id" element={<Convo />} />
           </Route>
+
+          <Route path="/reset-password" element={<PasswordReset />} />
 
           <Route path="*" element={<Error404 label={'Home'} navigateTo={'/home'} />} />
         </Routes>
