@@ -4,6 +4,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import Pusher from 'pusher-js';
 import { Context } from "../../context/UserContext";
 import LoadingContent from "../../services/loadingContent";
+import { Link } from "react-router-dom";
 
 const Convo = () => {
     const host = import.meta.env.VITE_HOST;
@@ -227,6 +228,10 @@ const Convo = () => {
                                 <div className="space-y-2">
                                     <p>{msg.message}</p>
                                     <p className="font-semibold">{msg.offer} DH</p>
+                                    <p className="font-semibold">Product: {msg.product.name}</p>
+                                    <Link to={`/product/${msg.product.id}`}>
+                                        <img src={`${host}${msg.product.images[0]}`} alt={msg.product.location} className="w-20 h-20 object-cover rounded" />
+                                    </Link>
                                     {msg.status === 'Pending' && msg.sender_id !== userId && (
                                         <div className="flex gap-2 mt-2">
                                             <button id={msg.id} onClick={handleAccept}
@@ -242,8 +247,7 @@ const Convo = () => {
                                         </div>
                                     )}
                                     {msg.status && msg.status !== 'Pending' && (
-                                        <p className={`mt-2 font-medium ${msg.status === 'Accepted' ? 'text-green-600' : 'text-red-600'
-                                            }`}>
+                                        <p className={`mt-2 font-medium ${msg.status === 'Accepted' ? 'text-green-600' : 'text-red-600'}`}>
                                             Status: {msg.status}
                                         </p>
                                     )}
