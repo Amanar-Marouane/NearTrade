@@ -20,14 +20,17 @@ const Show = () => {
     const [profile, setProfile] = useState([]);
     const [status, setStatus] = useState(0);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const { userId } = useContext(Context);
+    const { userId, handleFavorite, setSuccess } = useContext(Context);
     const [favCount, setFavCount] = useState(0);
     const [isFavorite, setIsFavorite] = useState(false);
-    const { handleFavorite, setSuccess } = useContext(Context);
     const [showOfferForm, setShowOfferForm] = useState(false);
     const [offerPrice, setOfferPrice] = useState('');
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [error, setError] = useState('');
+    const [reviews, setReviews] = useState([]);
+    const [rating, setRating] = useState(5);
+    const [hoverRating, setHoverRating] = useState(5);
+
 
     const Product = async () => {
         try {
@@ -47,6 +50,7 @@ const Show = () => {
             setProduct(result.data.product);
             setFavCount(result.data.product.favorites_count);
             setIsFavorite(result.data.product.isFaved);
+            setReviews(result.data.product.reviews);
 
         } catch (error) {
             console.log(error);
@@ -112,6 +116,36 @@ const Show = () => {
         setShowConfirmation(false);
         setOfferPrice('');
         setError('');
+    };
+
+    const handleReviewSubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        formData.append('rating', rating);
+
+        try {
+            const response = await fetch(`${host}/api/review/${product?.id}`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                },
+                body: formData,
+            })
+
+            const res = await response.json();
+
+            if (response.status === 200) {
+                setReviews(prevReviews => [
+                    res.data,
+                    ...prevReviews,
+                ]);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
+        e.target.reset();
     };
 
     return (
@@ -258,27 +292,96 @@ const Show = () => {
                         </div>
                     </div>
                 </section>
-                <section className="space-y-4">
-                    <h1 className="font-bold text-3xl">Costumers Reviews:</h1>
-                    <div className="flex gap-2">
-                        <h1 className="font-semibold text-2xl">4.8</h1>
-                        <div>
-                            <div className="flex">
-                                <FaStar color="gold" />
-                                <FaStar color="gold" />
-                                <FaStar color="gold" />
-                                <FaStar color="gold" />
-                                <FaStar color="gold" />
+                {userId !== product.user_id && (
+                    <div className="mt-8 p-6 bg-white rounded-lg border border-gray-200">
+                        <h2 className="text-xl font-semibold mb-4">Write a Review</h2>
+                        <form className="space-y-4" onSubmit={handleReviewSubmit}>
+                            <div>
+                                <label className="block text-gray-700 mb-2">Your Rating</label>
+                                <div className="flex gap-2">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <button
+                                            key={star}
+                                            type="button"
+                                            className="focus:outline-none"
+                                            onClick={() => setRating(star)}
+                                            onMouseEnter={() => setHoverRating(star)}
+                                            onMouseLeave={() => setHoverRating(0)}
+                                        >
+                                            <FaStar
+                                                size={24}
+                                                className={clsx(
+                                                    'transition-colors',
+                                                    (hoverRating || rating) >= star
+                                                        ? 'text-yellow-400'
+                                                        : 'text-gray-300'
+                                                )}
+                                            />
+                                        </button>
+                                    ))}
+                                </div>
+                                <p className="text-sm text-gray-500 mt-1">
+                                    {rating ? `Selected: ${rating} star${rating > 1 ? 's' : ''}` : 'Click to rate'}
+                                </p>
                             </div>
-                            <h1>Based On 55 Reviews</h1>
+                            <div>
+                                <label className="block text-gray-700 mb-2">Your Review</label>
+                                <textarea
+                                    name="review"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    rows="4"
+                                    placeholder="Share your experience with this product..."
+                                ></textarea>
+                            </div>
+                            <button
+                                type="submit"
+                                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+                            >
+                                Submit Review
+                            </button>
+                        </form>
+                    </div>
+                )}
+                <section className="space-y-4">
+                    <h1 className="font-bold text-3xl">Customer Reviews:</h1>
+
+                    {reviews && reviews.length > 0 ? (
+                        <>
+                            <div className="flex gap-2">
+                                <h1 className="font-semibold text-2xl">4.8</h1>
+                                <div>
+                                    <div className="flex">
+                                        <FaStar color="gold" />
+                                        <FaStar color="gold" />
+                                        <FaStar color="gold" />
+                                        <FaStar color="gold" />
+                                        <FaStar color="gold" />
+                                    </div>
+                                    <h1>Based on 55 Reviews</h1>
+                                </div>
+                            </div>
+
+                            <div className="space-y-4">
+                                {reviews.map((review) => (
+                                    <Comment
+                                        key={review.id}
+                                        img={`${host}/${review.user_profile}`}
+                                        name={review.user_name}
+                                        rating={review.rating}
+                                        comment={review.review}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    ) : (
+                        <div className="flex flex-col items-center justify-center py-8 pb-0 bg-gray-50 rounded-lg">
+                            <FaStar className="text-gray-300 mb-4" size={48} />
+                            <p className="text-gray-500 text-lg">No reviews yet</p>
+                            <p className="text-gray-400 text-sm mt-2">Be the first to review this product</p>
                         </div>
-                    </div>
-                    <div className="space-y-4">
-                        <Comment img={'/public/profile image.jpg'} name={'Marouane Allaoui'} rating={'4.8'} comment={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero sint a aut doloribus minima sit veritatis culpa inventore nemo non optio, sed recusandae, quam illo perspiciatis aliquam ex veniam. Voluptates.'} />
-                        <Comment img={'/public/profile image.jpg'} name={'Marouane Allaoui'} rating={'4.8'} comment={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero sint a aut doloribus minima sit veritatis culpa inventore nemo non optio, sed recusandae, quam illo perspiciatis aliquam ex veniam. Voluptates.'} />
-                        <Comment img={'/public/profile image.jpg'} name={'Marouane Allaoui'} rating={'4.8'} comment={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero sint a aut doloribus minima sit veritatis culpa inventore nemo non optio, sed recusandae, quam illo perspiciatis aliquam ex veniam. Voluptates.'} />
-                    </div>
+                    )}
                 </section>
+
 
                 {showOfferForm && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -330,7 +433,6 @@ const Show = () => {
                     </div>
                 )}
 
-                {/* Confirmation Modal */}
                 {showConfirmation && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                         <div className="bg-white p-6 rounded-lg w-96">
