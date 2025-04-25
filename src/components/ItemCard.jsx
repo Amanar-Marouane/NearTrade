@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
-import { FaMapMarkerAlt, FaRegHeart, FaTag, FaTags } from "react-icons/fa";
+import { FaMapMarkerAlt, FaRegHeart, FaTag, FaTags, FaStar } from "react-icons/fa";
 import clsx from 'clsx';
 import { Context } from "../context/UserContext";
 
 const ItemCard = ({ item }) => {
     const host = import.meta.env.VITE_HOST;
-    const { name, price, location, category, status, images, id, isFaved, favorites_count } = item;
+    const { name, price, location, category, status, images, id, isFaved, favorites_count, average_rating } = item;
     const [favCount, setFavCount] = useState(favorites_count);
     const [isFavorite, setIsFavorite] = useState(isFaved);
     const { handleFavorite } = useContext(Context);
@@ -53,6 +53,13 @@ const ItemCard = ({ item }) => {
                     <div className="flex items-center text-md text-black font-bold space-x-2">
                         <FaTag size={16} className="text-gray-700" />
                         <span>{price} DH</span>
+                    </div>
+
+                    <div className="flex items-center space-x-1">
+                        <div className="flex">
+                        <FaStar className="text-yellow-500" />
+                        </div>
+                        <span className="text-sm text-gray-600">({average_rating})</span>
                     </div>
 
                     <div className="flex items-center text-sm text-gray-600 space-x-2">

@@ -227,7 +227,7 @@ const Show = () => {
                             <div className="flex items-center space-x-2">
                                 <FaStar className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
                                 <span className="text-sm sm:text-base text-gray-700">
-                                    4.8 (25 reviews)
+                                    {product?.average_rating} ({reviews.length ?? 0} reviews)
                                 </span>
                             </div>
 
@@ -309,12 +309,6 @@ const Show = () => {
                                     <Link to={"/profile/" + profile?.id}>
                                         <h1 className="font-semibold text-sm sm:text-base text-black">{profile ? profile.name : ''}</h1>
                                     </Link>
-                                    <div className="flex items-center space-x-2 my-1">
-                                        <FaStar className="w-3 h-3 sm:w-4 sm:h-4 text-black" />
-                                        <span className="text-xs sm:text-sm text-gray-700">
-                                            4.8 (25 reviews)
-                                        </span>
-                                    </div>
                                     <h1 className="text-xs sm:text-sm text-gray-600">Member Since {profile ? profile.member_since : ''}</h1>
                                 </div>
                             </div>
@@ -379,7 +373,7 @@ const Show = () => {
                     {reviews && reviews.length > 0 ? (
                         <>
                             <div className="flex gap-2">
-                                <h1 className="font-semibold text-2xl">4.8</h1>
+                                <h1 className="font-semibold text-2xl">{product?.average_rating}</h1>
                                 <div>
                                     <div className="flex">
                                         <FaStar color="gold" />
@@ -388,7 +382,7 @@ const Show = () => {
                                         <FaStar color="gold" />
                                         <FaStar color="gold" />
                                     </div>
-                                    <h1>Based on 55 Reviews</h1>
+                                    <h1>Based on {reviews.length ?? 0} Reviews</h1>
                                 </div>
                             </div>
 
