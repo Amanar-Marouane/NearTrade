@@ -2,10 +2,11 @@ import AppLayout from '../../layouts/AppLayout';
 import Input from '../../components/Input';
 import FormButton from '../../components/FormButton';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Select from '../../components/Select';
 import LoadingContent from '../../services/loadingContent';
 import { Link } from 'react-router-dom';
+import { Context } from '../../context/UserContext';
 
 const Update = () => {
     const { id } = useParams();
@@ -18,6 +19,7 @@ const Update = () => {
     const [imageCount, setImageCount] = useState(0);
     const [product, setProduct] = useState([]);
     const [fetchStatus, setFetchStatus] = useState([]);
+    const { userId } = useContext(Context);
 
     const data = async () => {
         try {
@@ -44,7 +46,7 @@ const Update = () => {
 
     const item = async () => {
         try {
-            const response = await fetch(`${host}/api/product/${id}`, {
+            const response = await fetch(`${host}/api/products/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -55,7 +57,7 @@ const Update = () => {
 
             const result = await response.json();
             const prod = result.data['product'];
-            if (!prod['canUpdate']) navigate('/products/me');
+            if (prod.user_id !== userId) navigate('/products/me');
 
             setProduct(prod);
         } catch (error) {

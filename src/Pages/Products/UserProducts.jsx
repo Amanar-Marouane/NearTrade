@@ -38,21 +38,33 @@ const UserProducts = () => {
     return (
         <AppLayout>
             <LoadingContent status={status} />
-            <main className="min-h-[85vh] p-8 space-y-8">
-                <section>
-                    <h1 className="font-bold text-3xl">My Products:</h1>
-                </section>
-                {products && products.length > 0 ? (
-                    <section className="grid grid-cols-6 gap-4">
-                        {
-                            products.map(product => (
-                                <ItemCard key={product.id} item={product} />
-                            ))
-                        }
+            <main className="min-h-[85vh] px-4 py-6 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto">
+                    <section className="mb-6">
+                        <div className="flex items-center justify-between">
+                            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">My Products</h1>
+                            <a
+                                href="/products/store"
+                                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                <svg className="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                Add Product
+                            </a>
+                        </div>
                     </section>
-                ) : (
-                    <NoProductsView />
-                )}
+
+                    {products && products.length > 0 ? (
+                        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+                            {products.map(product => (
+                                <ItemCard key={product.id} item={product} />
+                            ))}
+                        </section>
+                    ) : (
+                        <NoProductsView />
+                    )}
+                </div>
             </main>
         </AppLayout>
     )

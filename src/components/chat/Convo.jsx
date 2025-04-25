@@ -207,7 +207,7 @@ const Convo = () => {
     }
 
     return (
-        <section className="w-full h-full flex flex-col">
+        <section className="w-[100vw] md:w-full h-full flex flex-col">
             <LoadingContent status={status} />
 
             <div className="p-4 border-b border-gray-200">
@@ -217,7 +217,7 @@ const Convo = () => {
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {conversation.map((msg, index) => (
                     <div key={index} className={`flex ${msg.sender_id === userId ? "justify-end" : "justify-start"}`}>
-                        <div className={`max-w-[70%] rounded-lg p-3 ${msg.type === 'Offer'
+                        <div className={`max-w-[90%] sm:max-w-[85%] md:max-w-[75%] lg:max-w-[65%] rounded-lg p-2 sm:p-3 break-words whitespace-normal ${msg.type === 'Offer'
                             ? 'bg-yellow-100 border-2 border-yellow-300 text-gray-800'
                             : msg.sender_id !== userId
                                 ? "bg-blue-500 text-white"
@@ -226,7 +226,7 @@ const Convo = () => {
                             <p className="font-medium text-sm">{msg.sender_id === userId ? 'Me' : otherUser}</p>
                             {msg.type === 'Offer' ? (
                                 <div className="space-y-2">
-                                    <p>{msg.message}</p>
+                                    <p className="whitespace-pre-wrap">{msg.message}</p>
                                     <p className="font-semibold">{msg.offer} DH</p>
                                     <p className="font-semibold">Product: {msg.product.name}</p>
                                     <Link to={`/product/${msg.product.id}`}>
@@ -253,7 +253,7 @@ const Convo = () => {
                                     )}
                                 </div>
                             ) : (
-                                <p>{msg.message}</p>
+                                <p className="whitespace-pre-wrap">{msg.message}</p>
                             )}
                             <p className="text-xs mt-1 opacity-70">{msg.timestamp}</p>
                         </div>

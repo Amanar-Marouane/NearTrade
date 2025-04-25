@@ -1,7 +1,6 @@
 import { FaRegHeart, FaStar } from "react-icons/fa";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import RedirectButton from '../../components/RedirectButton';
-import ItemCard from '../../components/ItemCard';
 import Comment from '../../components/Comment';
 import AppLayout from "../../layouts/AppLayout";
 import { useNavigate, useParams } from "react-router-dom";
@@ -30,7 +29,6 @@ const Show = () => {
     const [reviews, setReviews] = useState([]);
     const [rating, setRating] = useState(5);
     const [hoverRating, setHoverRating] = useState(5);
-
 
     const Product = async () => {
         try {
@@ -150,10 +148,10 @@ const Show = () => {
 
     return (
         <AppLayout>
-            <main className="px-8 py-12 flex flex-col gap-8">
+            <main className="px-4 sm:px-8 py-6 sm:py-12 flex flex-col gap-6">
                 <LoadingContent status={status} />
-                <section className="bg-gray-100 w-full h-[60vh] flex">
-                    <div className="w-[50%] h-full p-4">
+                <section className="bg-gray-100 w-full flex flex-col lg:flex-row">
+                    <div className="w-full lg:w-1/2 h-[40vh] sm:h-[50vh] lg:h-[70vh] p-4">
                         <div className="relative w-full h-full">
                             <div className="relative overflow-hidden rounded-lg h-full">
                                 {product.images && product.images.length > 0 ? (
@@ -174,13 +172,13 @@ const Show = () => {
                                             onClick={goToPrevious}
                                             className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 p-2 rounded-full shadow-md hover:bg-white"
                                         >
-                                            <FaChevronLeft size={24} />
+                                            <FaChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                                         </button>
                                         <button
                                             onClick={goToNext}
                                             className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 p-2 rounded-full shadow-md hover:bg-white"
                                         >
-                                            <FaChevronRight size={24} />
+                                            <FaChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
                                         </button>
                                     </>
                                 )}
@@ -192,19 +190,20 @@ const Show = () => {
                                         <button
                                             key={index}
                                             onClick={() => setCurrentIndex(index)}
-                                            className={`w-3 h-3 rounded-full ${index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'}`}
+                                            className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'}`}
                                         />
                                     ))}
                                 </div>
                             )}
                         </div>
                     </div>
-                    <div className="p-6 flex flex-col justify-between w-[50%] bg-white">
-                        <div className="flex flex-col gap-5">
+
+                    <div className="w-full lg:w-1/2 p-4 sm:p-6 flex flex-col bg-white">
+                        <div className="flex flex-col gap-4">
                             <div className="flex items-start justify-between w-full">
                                 <div>
-                                    <h1 className="text-4xl font-bold text-black">{product ? product.name : ''}</h1>
-                                    <h1 className="text-3xl font-semibold text-black">{product ? product.price : '??'}DH</h1>
+                                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-black">{product ? product.name : ''}</h1>
+                                    <h1 className="text-lg sm:text-xl lg:text-2xl font-semibold text-black mt-1">{product ? product.price : '??'}DH</h1>
                                 </div>
 
                                 <div className="flex justify-center items-center flex-col">
@@ -214,86 +213,117 @@ const Show = () => {
                                     >
                                         <FaRegHeart
                                             className={clsx(
-                                                'transition-colors',
+                                                'transition-colors w-5 h-5 sm:w-6 sm:h-6',
                                                 isFavorite
                                                     ? 'hover:text-gray-700 fill-red-700'
                                                     : 'hover:text-red-700 fill-gray-700'
                                             )}
-                                            size={20}
                                         />
-                                        <p className="text-xm font-semibold text-gray-700">{favCount}</p>
+                                        <p className="text-sm font-semibold text-gray-700">{favCount}</p>
                                     </button>
                                 </div>
                             </div>
 
                             <div className="flex items-center space-x-2">
-                                <FaStar size={16} className="text-black" />
-                                <span className="text-sm text-gray-700">
+                                <FaStar className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
+                                <span className="text-sm sm:text-base text-gray-700">
                                     4.8 (25 reviews)
                                 </span>
                             </div>
 
-                            <div className="bg-gray-50 p-4 rounded-md border border-gray-100">
-                                <h2 className="text-gray-800">{product ? product.description : ''}</h2>
+                            <div className="bg-gray-50 p-3 sm:p-4 rounded-md border border-gray-100">
+                                <h2 className="text-sm sm:text-base text-gray-800">{product ? product.description : ''}</h2>
                             </div>
 
                             <div className="flex items-center gap-2">
-                                <span className="font-semibold text-gray-700">Category:</span>
-                                <span className="bg-gray-100 text-black-800 px-3 py-1 rounded-full text-sm">
+                                <span className="font-semibold text-sm sm:text-base text-gray-700">Category:</span>
+                                <span className="bg-gray-100 text-black-800 px-2 py-1 rounded-full text-xs sm:text-sm">
                                     {product ? product.category : 'Uncategorized'}
                                 </span>
                             </div>
 
-                            <div className="flex gap-6 pt-3">
-                                {product && product.user_id !== userId && (() => (
+                            <div className="lg:hidden flex flex-col gap-2 mt-2">
+                                {product && product.user_id !== userId && (
                                     <>
                                         <button
                                             type="button"
-                                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+                                            className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors text-sm sm:text-base"
                                             onClick={() => setShowOfferForm(true)}
                                         >
-                                            Offre a deal
+                                            Offer a deal
+                                        </button>
+                                        <RedirectButton
+                                            label={'Message Seller'}
+                                            href={`/chat/${product.user_id}`}
+                                            className="w-full text-sm sm:text-base"
+                                        />
+                                    </>
+                                )}
+                                {product && product.user_id === userId && (
+                                    <>
+                                        <DeleteButton id={product.id} className="w-full text-sm sm:text-base" />
+                                        <RedirectButton
+                                            label="Edit"
+                                            href={`/product/update/${product.id}`}
+                                            className="w-full text-sm sm:text-base"
+                                        />
+                                    </>
+                                )}
+                            </div>
+
+                            <div className="hidden lg:flex gap-4 mt-4">
+                                {product && product.user_id !== userId && (
+                                    <>
+                                        <button
+                                            type="button"
+                                            className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors"
+                                            onClick={() => setShowOfferForm(true)}
+                                        >
+                                            Offer a deal
                                         </button>
                                         <RedirectButton label={'Message Seller'} href={`/chat/${product.user_id}`} />
                                     </>
-                                ))()}
-
-                                {product && product.user_id === userId && (() => (
+                                )}
+                                {product && product.user_id === userId && (
                                     <>
                                         <DeleteButton id={product.id} />
                                         <RedirectButton label="Edit" href={`/product/update/${product.id}`} />
                                     </>
-                                ))()}
+                                )}
                             </div>
-
                         </div>
 
-                        <div className="mt-10 border-t border-gray-200 pt-6">
-                            <h1 className="text-xl font-bold text-black mb-4">Seller Info:</h1>
-                            <div className="flex gap-4 items-center">
+                        <div className="mt-6 sm:mt-8 pt-4 border-t border-gray-200">
+                            <h1 className="text-base sm:text-lg font-bold text-black mb-3">Seller Info:</h1>
+                            <div className="flex gap-3 items-center">
                                 <Link to={"/profile/" + profile?.id}>
-                                    <div className="h-12 w-12 rounded-full overflow-hidden bg-gray-200 border border-gray-300">
-                                        <img src={profile ? profile.profile : ''} alt={profile ? profile.name : ''} className="h-full w-full object-cover" />
+                                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full overflow-hidden bg-gray-200 border border-gray-300">
+                                        <img
+                                            src={profile ? profile.profile : ''}
+                                            alt={profile ? profile.name : ''}
+                                            className="h-full w-full object-cover"
+                                        />
                                     </div>
                                 </Link>
                                 <div>
                                     <Link to={"/profile/" + profile?.id}>
-                                        <h1 className="font-semibold text-black">{profile ? profile.name : ''}</h1>
+                                        <h1 className="font-semibold text-sm sm:text-base text-black">{profile ? profile.name : ''}</h1>
                                     </Link>
                                     <div className="flex items-center space-x-2 my-1">
-                                        <FaStar size={14} className="text-black" />
-                                        <span className="text-sm text-gray-700">
+                                        <FaStar className="w-3 h-3 sm:w-4 sm:h-4 text-black" />
+                                        <span className="text-xs sm:text-sm text-gray-700">
                                             4.8 (25 reviews)
                                         </span>
                                     </div>
-                                    <h1 className="text-sm text-gray-600">Member Since {profile ? profile.member_since : ''}</h1>
+                                    <h1 className="text-xs sm:text-sm text-gray-600">Member Since {profile ? profile.member_since : ''}</h1>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
+
                 {userId !== product.user_id && (
-                    <div className="mt-8 p-6 bg-white rounded-lg border border-gray-200">
+                    <div className="p-6 bg-white rounded-lg border border-gray-200">
                         <h2 className="text-xl font-semibold mb-4">Write a Review</h2>
                         <form className="space-y-4" onSubmit={handleReviewSubmit}>
                             <div>
@@ -342,6 +372,7 @@ const Show = () => {
                         </form>
                     </div>
                 )}
+
                 <section className="space-y-4">
                     <h1 className="font-bold text-3xl">Customer Reviews:</h1>
 
@@ -382,10 +413,9 @@ const Show = () => {
                     )}
                 </section>
 
-
                 {showOfferForm && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white p-6 rounded-lg w-96">
+                        <div className="bg-white p-6 rounded-lg w-11/12 sm:w-96">
                             <h2 className="text-xl font-semibold mb-4">Make an Offer</h2>
                             <form onSubmit={handleOfferSubmit}>
                                 <div className="mb-4">
@@ -435,7 +465,7 @@ const Show = () => {
 
                 {showConfirmation && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white p-6 rounded-lg w-96">
+                        <div className="bg-white p-6 rounded-lg w-11/12 sm:w-96">
                             <h2 className="text-xl font-semibold mb-4">Confirm Your Offer</h2>
                             <p className="mb-4">Are you sure you want to offer {offerPrice} DH for this item?</p>
                             <div className="flex justify-end gap-2">
@@ -460,7 +490,7 @@ const Show = () => {
                 )}
             </main>
         </AppLayout>
-    )
-}
+    );
+};
 
 export default Show;

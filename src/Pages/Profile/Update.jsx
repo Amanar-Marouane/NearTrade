@@ -6,7 +6,7 @@ import Input from "../../components/Input";
 import FormButton from "../../components/FormButton";
 
 const Update = () => {
-    const { user, setError, setSuccess } = useContext(Context);
+    const { user, setError, setSuccess, userId } = useContext(Context);
     const host = import.meta.env.VITE_HOST;
     const [formData, setFormData] = useState({
         'name': user.name,
@@ -79,7 +79,7 @@ const Update = () => {
         <AppLayout>
             <main className='bg-gray-100 min-h-[85vh] flex items-center justify-center p-4'>
                 <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-2xl">
-                    <Link to={'/profile'}>
+                    <Link to={`/profile/${userId}`}>
                         <img src="/back-icon.svg" alt="Get Back To Profile" className='h-8 w-8' />
                     </Link>
                     <h1 className="text-2xl font-bold text-center mb-8 text-black">Edit Your Profile</h1>

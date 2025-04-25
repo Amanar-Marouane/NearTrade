@@ -13,7 +13,6 @@ const Favorite = () => {
                 credentials: 'include',
             })
             const res = await response.json();
-            console.log(res.data);
             setFavorites(res.data);
         } catch (error) {
             console.log(error);
@@ -26,21 +25,26 @@ const Favorite = () => {
 
     return (
         <AppLayout>
-            <main className="min-h-[85vh] p-8 space-y-8">
-                <section>
-                    <h1 className="font-bold text-3xl">My Favorites:</h1>
-                </section>
-                {favorites && favorites.length > 0 ? (
-                    <section className="grid grid-cols-6 gap-4">
-                        {
-                            favorites.map(product => (
-                                <ItemCard key={product.id} item={product} />
-                            ))
-                        }
+            <main className="min-h-screen bg-gray-50 px-4 py-6 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto">
+                    <section className="mb-6">
+                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">My Favorites</h1>
                     </section>
-                ) : (
-                    <NoProductsView />
-                )}
+
+                    {favorites && favorites.length > 0 ? (
+                        <div className="space-y-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+                                {favorites
+                                    .map(product => (
+                                        <ItemCard key={product.id} item={product} />
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    ) : (
+                        <NoProductsView />
+                    )}
+                </div>
             </main>
         </AppLayout>
     )

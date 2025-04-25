@@ -72,7 +72,7 @@ const LogIn = () => {
               <h2>Or Continue With</h2>
             </div>
           </div>
-          <form className="w-[30%] flex flex-col justify-center items-center gap-6 mt-6" onSubmit={handleSubmit}>
+          <form className="w-[90%] sm:w-[70%] md:w-[50%] lg:w-[30%] flex flex-col justify-center items-center gap-6 mt-6" onSubmit={handleSubmit}>
             <Input title="Email Address" id="email" name="email" type="text" placeholder="Enter your email" src="/email-icon.svg" />
 
             <Input title="Password" id="password" name="password" type="password" placeholder="Create a password" src="/lock-icon.svg" />

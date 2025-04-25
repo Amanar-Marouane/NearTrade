@@ -63,14 +63,14 @@ const SignUp = () => {
 
         <OAuth></OAuth>
 
-        <section className="w-full flex flex-col justify-center items-center py-12 gap-2">
+        <section className="w-full flex flex-col justify-center items-center py-6 sm:py-8 md:py-12 gap-2">
           <div className="w-full relative">
             <div className="w-full h-[1px] bg-gray-300"></div>
             <div className="absolute right-[50%] translate-x-[50%] translate-y-[-50%] bg-white px-4">
-              <h2>Or Continue With</h2>
+              <h2 className="text-sm sm:text-base">Or Continue With</h2>
             </div>
           </div>
-          <form className="w-[30%] flex flex-col justify-center items-center gap-6 mt-6" onSubmit={handleSubmit} encType="multipart/form-data">
+          <form className="w-[90%] sm:w-[70%] md:w-[50%] lg:w-[30%] flex flex-col justify-center items-center gap-4 sm:gap-6 mt-6" onSubmit={handleSubmit} encType="multipart/form-data">
             <Input title="Username" id="name" name="name" type="text" placeholder="Choose a username" src="/user-icon.svg" />
 
             <Input title="Email Address" id="email" name="email" type="text" placeholder="Enter your email" src="/email-icon.svg" />
