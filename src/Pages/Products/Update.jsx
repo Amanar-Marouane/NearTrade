@@ -165,7 +165,7 @@ const Update = () => {
                 element.innerHTML = '';
             });
 
-            const response = await fetch(`${host}/api/product/update/${id}`, {
+            const response = await fetch(`${host}/api/products/update/${id}`, {
                 method: "POST",
                 headers: {
                     "Accept": "application/json",
@@ -174,11 +174,11 @@ const Update = () => {
                 body: formData,
             });
 
-            const result = await response.json();
-
-            if (response.status === 200) {
+            if (response.status === 204) {
                 navigate('/products/me');
             }
+
+            const result = await response.json();
 
             if (result.errors) {
                 const errors = Object.entries(result.errors).reduce((acc, [key, value]) => {
