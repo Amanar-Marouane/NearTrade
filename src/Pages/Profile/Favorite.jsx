@@ -26,7 +26,7 @@ const Favorite = () => {
     return (
         <AppLayout>
             <main className="min-h-screen bg-gray-50 px-4 py-6 sm:px-6 lg:px-8">
-                <div className="max-w-7xl">
+                <div className="max-w-full">
                     <section className="mb-6">
                         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">My Favorites</h1>
                     </section>
