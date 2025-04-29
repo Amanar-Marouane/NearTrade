@@ -129,7 +129,7 @@ const Index = () => {
                 </section>
 
                 <section className="px-4 sm:px-8 mb-8">
-                    <div className="max-w-7xl">
+                    <div className="max-w-full">
                         <h1 className="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-6">Active Listings</h1>
 
                         {user && user.lastActiveProducts && user.lastActiveProducts.length <= 0 ? (
